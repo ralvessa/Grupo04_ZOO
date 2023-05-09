@@ -81,7 +81,9 @@
               <a href="pagina das notícias" class="nav-link">Notícias</a>
             </li>
             <li class="nav-item">
-              <a href="{% url 'ZOO_App:about' %}" class="nav-link">Acerca do zoo</a>
+              <a href="{% url 'ZOO_App:about' %}" class="nav-link"
+                >Acerca do zoo</a
+              >
             </li>
             <li class="nav-item">
               <a href="{% url 'ZOO_App:shop' %}" class="nav-link">Loja</a>
@@ -96,11 +98,7 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <img
-                  alt="person_circle"
-                  width="30px"
-                  height="30px"
-                />
+                <img alt="person_circle" width="30px" height="30px" />
               </a>
               <div
                 class="dropdown-menu dropdown-menu-end"
@@ -128,7 +126,7 @@
         </div>
       </div>
     </nav>
-    {% block conteudo %}
+
     <div
       class="modal fade"
       id="exampleModal"
@@ -166,6 +164,7 @@
         </div>
       </div>
     </div>
+    {% block conteudo %}
     <div class="row w-100 g-0">
       <p style="background-color: aqua; width: 100%">
         Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
