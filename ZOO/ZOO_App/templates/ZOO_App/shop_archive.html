@@ -1,22 +1,32 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Shop</title>
-    <link rel="stylesheet" href="styleShop.css">
+{%extends "./index.html"%} 
+
+{%block titulo%} Shop {%endblock%}
+{% load static %}
+
+{%block head%}
+<link rel="stylesheet" href="{%static 'css\styleShop.css' %}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
-</head>
+{%endblock%}
+
+{%block conteudo%}
+
+
 <body>
     <div class="nav container">
         <a href="#" class="logo"> Shopping </a>
         <i class="bx bx-shopping-bag" id="cart-icon"></i>
     </div>
 
-    <section class="shop container">
-        <h2 class="section title">Shop Products</h2>
+    <section class="shop container"> 
+        <h2 class="section-title">Shop Products</h2>
+        <div class="shop-content">
+            
+            {% for produto in product_list %}
+                <div class="product-box">
+                    <img src={{produto.imagem.url}} alt="" class="product-image">
+                    <h2 class="product-title">{{produto.designacao}}</h2>
+                </div>
+            {% endfor %} 
+        </div>
     </section>
-    
-</body>
-</html>
+    {% endblock %}

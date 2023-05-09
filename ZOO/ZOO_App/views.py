@@ -5,7 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import render
 from django.urls import reverse
 
-from .models import Utilizador
+from .models import *
 
 
 # Create your views here.
@@ -62,4 +62,7 @@ def render_about(request):
     return render(request, 'ZOO_App/about.html')
 
 def render_shop(request):
-    return render(request, 'ZOO_App/shop_archive.html')
+    product_list = Produto.objects.all()
+    context = {'product_list': product_list,
+    }
+    return render(request, 'ZOO_App/shop_archive.html', context)
