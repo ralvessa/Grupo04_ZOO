@@ -1,0 +1,545 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+      crossorigin="anonymous"
+    />
+    <title>Página do ZOO</title>
+    <style>
+      .carousel-indicators [data-bs-target] {
+        width: 15px;
+        height: 15px;
+        border-radius: 100%;
+      }
+
+      .flex-center-v {
+        display: flex;
+        align-items: center;
+      }
+
+      .flex-center-h {
+        display: flex;
+        justify-content: center;
+      }
+
+      .flex-center {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      .box {
+        height: 100%;
+        width: 100%;
+        display: flex;
+      }
+      body {
+        padding: 0px;
+        margin: 0px;
+        width: 100%;
+        background-color: rgb(242, 242, 235);
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="navbar sticky-top navbar-expand-lg">
+      <div class="container">
+        <a href="" class="navbar-brand">
+          <img src="zoo_badge.png" alt="zoo_badge" width="40px" height="40px" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarContent"
+          aria-controls="navbarContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a href="" class="nav-link active" aria-current="page">Início</a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'ZOO_App:listagem_animais' %}" class="nav-link"
+                >Animais</a
+              >
+            </li>
+            <li class="nav-item">
+              <a href="pagina das notícias" class="nav-link">Notícias</a>
+            </li>
+            <li class="nav-item">
+              <a href="{% url 'ZOO_App:about' %}" class="nav-link">Acerca do zoo</a>
+            </li>
+            <li class="nav-item">
+              <a href="pagina de loja" class="nav-link">Loja</a>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+              <a
+                href="#"
+                class="nav-link dropdown-toggle"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                <img
+                  alt="person_circle"
+                  width="30px"
+                  height="30px"
+                />
+              </a>
+              <div
+                class="dropdown-menu dropdown-menu-end"
+                style="overflow: hidden"
+              >
+                {% if request.user.is_authenticated %}
+                <a
+                  href=""
+                  class="dropdown-item"
+                  data-bs-target="#exampleModal"
+                  data-bs-toggle="modal"
+                  >Logout</a
+                >
+                {% else %}
+                <a href="{% url 'ZOO_App:login' %}" class="dropdown-item"
+                  >Login</a
+                >
+                <a href="{% url 'ZOO_App:registar' %}" class="dropdown-item"
+                  >Registar</a
+                >
+                {% endif %}
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <div
+      class="modal fade"
+      id="exampleModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Confirmação de logout
+            </h1>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <h3>Tem a certeza que quer efetuar logout?</h3>
+          </div>
+          <div class="modal-footer">
+            <a
+              href="#"
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Não
+            </a>
+            <a href="{% url 'ZOO_App:logout' %}" class="btn btn-primary">Sim</a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row w-100 g-0">
+      <p style="background-color: aqua; width: 100%">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
+        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
+        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
+        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
+        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
+        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
+      </p>
+      <p style="background-color: aqua; width: 100%">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
+        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
+        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
+        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
+        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
+        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
+      </p>
+      <p style="background-color: aqua; width: 100%">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
+        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
+        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
+        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
+        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
+        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
+      </p>
+      <p style="background-color: aqua; width: 100%">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
+        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
+        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
+        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
+        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
+        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
+      </p>
+      <p style="background-color: aqua; width: 100%">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
+        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
+        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
+        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
+        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
+        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
+      </p>
+      <p style="background-color: aqua; width: 100%">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
+        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
+        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
+        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
+        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
+        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
+      </p>
+      <p style="background-color: aqua; width: 100%">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
+        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
+        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
+        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
+        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
+        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
+      </p>
+      <p style="background-color: aqua; width: 100%">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
+        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
+        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
+        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
+        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
+        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
+      </p>
+      <p style="background-color: aqua; width: 100%">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
+        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
+        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
+        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
+        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
+        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
+      </p>
+      <p style="background-color: aqua; width: 100%">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
+        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
+        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
+        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
+        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
+        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
+      </p>
+      <p style="background-color: aqua; width: 100%">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
+        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
+        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
+        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
+        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
+        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
+      </p>
+      <p style="background-color: aqua; width: 100%">
+        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
+        sapiente voluptatum quod nostrum nulla excepturi temporibus quis
+        consectetur sunt. Ratione iusto animi cupiditate laudantium neque vero
+        non? Corporis, magni delectus.
+      </p>
+    </div>
+    <!-- <nav
+      class="navbar navbar-expand-lg fixed-top"
+      style="background-color: aqua"
+    >
+      <div class="container w-100">
+        <a class="navbar-brand" href="#">
+          <img src="zoo_badge.png" alt="zoo_badge" width="45" height="45" />
+        </a>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+          <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+            <li class="nav-item">
+              <a class="nav-link active" aria-current="page" href="#">Home</a>
+            </li>
+            <li class="nav-item">
+              <a class="nav-link" href="#">Link</a>
+            </li>
+            <li class="nav-item dropdown">
+              <a
+                class="nav-link dropdown-toggle"
+                href="#"
+                role="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Dropdown
+              </a>
+              <ul class="dropdown-menu">
+                <li><a class="dropdown-item" href="#">Action</a></li>
+                <li><a class="dropdown-item" href="#">Another action</a></li>
+                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <a class="dropdown-item" href="#">Something else here</a>
+                </li>
+              </ul>
+            </li>
+          </ul>
+          <a class="nav-link" href="/login.html">User info</a>
+        </div>
+      </div>
+    </nav>
+
+    <div id="carouselExampleIndicators" class="carousel slide carousel-dark">
+      <div class="carousel-indicators">
+        <button
+          type="button"
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide-to="0"
+          class="active"
+          aria-current="true"
+          aria-label="Slide 1"
+        ></button>
+        <button
+          type="button"
+          data-bs-target="#carouselExampleIndicators"
+          data-bs-slide-to="1"
+          aria-label="Slide 2"
+        ></button>
+      </div>
+      <div class="carousel-inner">
+        <div class="carousel-item active">
+          <img src="giraffe.jpg" class="d-block w-100" alt="girafa" />
+        </div>
+        <div class="carousel-item">
+          <img src="tigre.jpg" class="d-block w-100" alt="tigre" />
+        </div>
+      </div>
+      <button
+        class="carousel-control-prev"
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="prev"
+      >
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+      </button>
+      <button
+        class="carousel-control-next"
+        type="button"
+        data-bs-target="#carouselExampleIndicators"
+        data-bs-slide="next"
+      >
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+      </button>
+    </div>
+
+    <div class="row justify-content-center my-sm-3 w-100">
+      <div class="col-sm-4 gx-1">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-2 flex-center-v">
+                <img
+                  src="alarm-clock-icon.png"
+                  alt="alarm-clock"
+                  height="30px"
+                  width="30px"
+                />
+              </div>
+              <div class="col">
+                <h5 class="card-title">Horário</h5>
+                <p class="card-text">
+                  Aberto das 09:00 até 18:00 todos os dias.
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-sm-4 gx-1">
+        <div class="card">
+          <div class="card-body">
+            <div class="row">
+              <div class="col-md-2 flex-center-v">
+                <img
+                  src="thermometer-icon.png"
+                  alt="thermometer"
+                  width="30px"
+                  height="30px"
+                />
+              </div>
+              <div class="col">
+                <h5 class="card-title">Temperatura</h5>
+                <p class="card-text">Estão 12 graus no local do zoo.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row justify-content-center" style="background-color: aqua">
+      <div class="col-md-8">
+        <div class="card">
+          <div class="card-body">
+            <div class="row justify-content-center">
+              <div class="col-md-3 border border-2 rounded-3 mx-2">
+                <a href="#" class="btn" role="button">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <h5>Card title</h5>
+                      <p>
+                        Lorem ipsum dolor sit, amet consectetur adipisicing
+                        elit. Aliquid sed eligendi perspiciatis, iste eveniet
+                        error officia quos ad quidem obcaecati consequuntur
+                        sequi possimus mollitia facere. Error explicabo unde
+                        saepe quos.
+                      </p>
+                    </div>
+                    <div
+                      class="col-md-4"
+                      style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <img
+                        src="ticket-icon.png"
+                        alt="ticket"
+                        width="50px"
+                        height="50px"
+                      />
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-3 border border-2 rounded-3 mx-2">
+                <a href="#" class="btn" role="button">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <h5>Card title</h5>
+                      <p>
+                        Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                        Alias vel molestiae architecto. Id hic, officiis alias
+                        nihil aut repudiandae voluptatem voluptatum, saepe vero
+                        consectetur quis veniam. Aspernatur incidunt quasi eum
+                        molestias accusamus vel magnam in, odio quaerat minus ex
+                        non sequi porro quibusdam cumque velit.
+                      </p>
+                    </div>
+                    <div
+                      class="col-md-4"
+                      style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <img
+                        src="crossroads-icon.png"
+                        alt="crossroads"
+                        width="50px"
+                        height="50px"
+                      />
+                    </div>
+                  </div>
+                </a>
+              </div>
+              <div class="col-md-3 border border-2 rounded-3 mx-2">
+                <a href="#" class="btn" role="button">
+                  <div class="row">
+                    <div class="col-md-8">
+                      <h5>Card title</h5>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipisicing
+                        elit. Veritatis cum accusantium minus quas aliquam odio
+                        nostrum harum architecto illo aperiam veniam ipsa
+                        tempora sapiente id autem natus, quidem optio enim quod
+                        eius? Nulla exercitationem earum animi reprehenderit hic
+                        unde maiores harum pariatur fugit ratione, voluptatibus
+                        nobis possimus minus eligendi voluptates adipisci
+                        assumenda, optio esse laudantium error quasi. Sapiente
+                        accusamus, adipisci repellat sint a omnis itaque!
+                      </p>
+                    </div>
+                    <div
+                      class="col-md-4"
+                      style="
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                      "
+                    >
+                      <img
+                        src="crossroads-icon.png"
+                        alt="crossroads"
+                        width="50px"
+                        height="50px"
+                      />
+                    </div>
+                  </div>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <footer style="background-color: black">
+      <div class="row justify-content-center">
+        <div
+          class="col-sm-4 col-md col-sm-4 col-12 col pt-5 mx-5"
+          style="color: #fff"
+        >
+          <h5>Find us</h5>
+          <p style="padding-bottom: 10px">
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas at
+            ex velit dolorum inventore sequi, repudiandae, ea, hic fugiat
+            placeat ab vero distinctio aspernatur porro consequuntur voluptatum
+            saepe amet temporibus.
+          </p>
+        </div>
+        <div
+          class="col-sm-4 col-md col-sm-4 col-12 col pt-5 mx-5"
+          style="color: #fff"
+        >
+          <h5>Quick Links</h5>
+          <ul style="list-style-type: none; margin: 0px; padding-left: 0px">
+            <li><a href=""> Teste1</a></li>
+            <li><a href=""> Teste2</a></li>
+          </ul>
+        </div>
+      </div>
+    </footer> -->
+
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
+      crossorigin="anonymous"
+    ></script>
+  </body>
+</html>
