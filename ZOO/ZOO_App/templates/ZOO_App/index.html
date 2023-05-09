@@ -11,6 +11,7 @@
       crossorigin="anonymous"
     />
     <title>{%block titulo%}Página do ZOO{%endblock%}</title>
+    {%block head%} {%endblock%}
     <style>
       .carousel-indicators [data-bs-target] {
         width: 15px;
@@ -47,7 +48,7 @@
       }
     </style>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{%static 'css/style.css' %}" />
+    <link rel="stylesheet"  href="{%static 'css/style.css' %}" />
   </head>
   <body>
     <nav class="navbar sticky-top navbar-expand-lg">
