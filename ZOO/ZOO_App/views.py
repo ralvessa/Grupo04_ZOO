@@ -60,3 +60,6 @@ def render_logout(request):
 
 def render_about(request):
     return render(request, 'ZOO_App/about.html')
+
+def render_shop(request):
+    return render(request, 'ZOO_App/shop_archive.html')
