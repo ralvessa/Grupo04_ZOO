@@ -20,7 +20,7 @@ class Produto(models.Model):
         ("P","Peluches"),
     ]
     designacao = models.CharField(max_length=50)
-    preco = models.IntegerField()
+    preco = models.FloatField()
     categoria = models.CharField(choices=TIPOS_PRODUTO, max_length=1)
     imagem = models.FileField(upload_to="produtos", null=True)
 
