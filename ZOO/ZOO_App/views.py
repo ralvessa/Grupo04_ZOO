@@ -2,7 +2,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.http import HttpResponseRedirect
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 
 from .models import *
@@ -66,3 +66,39 @@ def render_shop(request):
     context = {'product_list': product_list,
     }
     return render(request, 'ZOO_App/shop_archive.html', context)
+
+def render_produto(request, produto_id):
+    produto = get_object_or_404(Produto, pk=produto_id)
+    return render(request, 'ZOO_App/product_info.html', {'produto': produto})
+
+#@login_required(login_url='/ZOOApp')
+def addProductToCart(request):
+        produto_set = ProdutoCarinhoCompras_pk.objects.all()
+        context = {'produto_set': produto_set,
+                   }
+        if request.method == 'POST':
+            try:
+                produto_id = request.POST.get("produto_id")
+            except KeyError:
+                return render(request, 'ZOO_App/product_info.html', context)
+            #request.user.id
+            if produto_id:
+                produto = get_object_or_404(Produto, pk=produto_id)
+                utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
+                try:
+                    pcc_pk = ProdutoCarinhoCompras_pk.objects.get(produto=produto, utilizador=utilizador)
+                except ProdutoCarinhoCompras_pk.DoesNotExist:
+                    pcc_pk2 = ProdutoCarinhoCompras_pk(produto=produto, utilizador=utilizador)
+                    pcc_pk2.save()
+                    pcc1 = ProdutoCarinhoCompras(produtocarinhocompras_pk=pcc_pk2, quantidade=1)
+                    pcc1.save()
+                    return HttpResponseRedirect(reverse('ZOO_App:shop'))
+                #pcc_pk = get_object_or_404(ProdutoCarinhoCompras_pk, pk=questao_id)
+                pcc = get_object_or_404(ProdutoCarinhoCompras, produtocarinhocompras_pk=pcc_pk)
+                pcc.quantidade+=1
+                pcc.save()
+                return HttpResponseRedirect(reverse('ZOO_App:shop'))
+            else:
+                print("Produto selecionado não existe")
+        else:
+            return render(request, 'ZOO_App/product_info.html', context)

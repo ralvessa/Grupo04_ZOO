@@ -1,0 +1,38 @@
+{%extends "./index.html"%} 
+
+{%block titulo%} Product {%endblock%}
+{% load static %}
+
+{%block head%}
+<link rel="stylesheet" href="{%static 'css\styleProduct.css' %}">
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+{%endblock%}
+
+{%block conteudo%}
+
+<h1 class="product-title">Produto</h1>
+<div class="product-content">
+    <div class="product-image-container" style="width:40%; height:auto; float: left;">
+        <img src="static{{produto.imagem.url}}" alt="">
+    </div>
+    <div class="product-info" style="margin-left: 45%; width: 50%;">
+        <h3 class="product-name">{{produto.designacao}}</h3>
+        <p class="product-description">Descricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaaodescricaoaodescricao
+            descricaodescricaodescricaodescricaodescricaodescricaodescricaodescricao
+            descricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaodescricao
+            descricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaodes
+            descricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaodescricao
+        </p>
+
+        <br><br><br><br><br><br>
+        <h3 class="product-price"> {{produto.preco}} € </h3>
+        
+        <form action="{% url 'ZOO_App:addProductToCart' %}" method="post">
+            {% csrf_token %}
+            <button name="produto_id" type="submit" value="{{ produto.id }}" class="add-cart">Add to cart</button>
+        </form>
+    </div>
+</div>
+
+
+{%endblock%}
