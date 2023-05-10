@@ -9,4 +9,7 @@ urlpatterns = [
     path('registar', views.render_register, name='registar'),
     path('logout', views.render_logout, name='logout'),
     path('about',views.render_about, name='about'),
+    path('shop',views.render_shop, name='shop'),
+    path('<int:produto_id>',views.render_produto, name='produto'),
+    path('addProductToCart',views.addProductToCart, name='addProductToCart'),
 ]

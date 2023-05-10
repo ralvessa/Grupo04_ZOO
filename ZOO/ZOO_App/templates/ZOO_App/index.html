@@ -11,6 +11,7 @@
       crossorigin="anonymous"
     />
     <title>{%block titulo%}Página do ZOO{%endblock%}</title>
+
     {%block head%} {%endblock%}
     <style>
       .carousel-indicators [data-bs-target] {
@@ -86,7 +87,7 @@
               >
             </li>
             <li class="nav-item">
-              <a href="pagina de loja" class="nav-link">Loja</a>
+              <a href="{% url 'ZOO_App:shop' %}" class="nav-link">Loja</a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

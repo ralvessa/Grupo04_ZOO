@@ -1,0 +1,30 @@
+.product-content{
+    margin-top: 50px;
+}
+
+.product-image-container{
+    margin-left: 3%;
+}
+
+.product-title{
+    text-align: center;
+    margin-top: 10px;
+}
+img{
+    /*max-width: 100%;
+    max-height: 100%;*/
+    width: 90%;
+    height: auto;
+    /*object-fit: contain*/
+}
+.product-name{
+    text-align: center;
+    margin-top: 10px;
+}
+.product-price{
+    margin-left: 30px;
+}
+.add-cart{
+    float: right;
+    margin-right: 30px;
+}
