@@ -11,6 +11,8 @@
       crossorigin="anonymous"
     />
     <title>{%block titulo%}Página do ZOO{%endblock%}</title>
+
+    {%block head%} {%endblock%}
     <style>
       a {
         text-decoration: none;
@@ -53,7 +55,7 @@
       }
     </style>
     {% load static %}
-    <link rel="stylesheet" type="text/css" href="{%static 'css/style.css' %}" />
+    <link rel="stylesheet"  href="{%static 'css/style.css' %}" />
   </head>
   <body>
     <nav class="navbar sticky-top navbar-expand-lg">
@@ -103,7 +105,7 @@
               >
             </li>
             <li class="nav-item">
-              <a href="pagina de loja" class="nav-link">Loja</a>
+              <a href="{% url 'ZOO_App:shop' %}" class="nav-link">Loja</a>
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">

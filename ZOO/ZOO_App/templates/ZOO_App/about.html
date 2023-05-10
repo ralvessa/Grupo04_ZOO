@@ -1,18 +1,19 @@
-{%extends "./index.html"%} 
+{%extends "./index.html"%} {% load static %} {%block titulo%} About {%endblock%}
+{%block head%}<link
+  rel="stylesheet"
+  href="{%static 'css/style.css' %}"
+/>{%endblock%} {%block conteudo%}
 
-{%block titulo%} About {%endblock%}
-{%block conteudo%}
-{% load static %}
 <div style="position: relative">
   <img
-    src="{%static 'Animals\tiger1.jpg' %}"
+    src="{%static 'Animals\redPanda.jpg' %}"
     alt="ups"
     style="width: 100%; height: auto"
   />
   <div
     style="
       position: absolute;
-      top: 95%;
+      top: 93%;
       left: 50%;
       transform: translate(-50%, -50%);
     "
@@ -28,5 +29,50 @@
     </h1>
   </div>
 </div>
-<div style="margin-left: 20%; margin-right: 20%"></div>
+<div style="margin-left: 20%; margin-right: 20%; background-color: white">
+  <br /><br />
+  <h2 class="text_title_about">O nosso ZOO:</h2>
+  <br />
+  <p class="text_about">
+    O Jardim Zoológico ZOO foi fundado em 1970 por um grupo de recém licenciados
+    em Biologia. Este grupo, unido pelo seu amor aos animais (e pela falta de
+    oportunidade de emprego no país) decidiu embarcar na maior aventura das suas
+    vida e fundar a instituição ZOO. Começaram de maneira modesta por falta de
+    fundos mas, a ideia inédita de recriar habitats e colocar animais em
+    exposição foi um sucesso imediato, dando a oportunidade a centenas de
+    pessoas de experienciar animais que nunca tinham visto na vida. A ideia
+    rapidamente se espalhou pelas várias partes do mundo, mas nunca ninguém
+    esquecerá que foi o Zoo ZOO o berço de nascimento do conceito que agora
+    agrada milhões de pessoas.
+  </p>
+  <br /><br />
+  <h2 class="text_title_about">A nossa Missão:</h2>
+  <br />
+  <p class="text_about">
+    Desde a nossa inauguração que procuramos preservar a continuidade das
+    espécies do reino animal. Ao educar a próxima geração de protetores do
+    ambiente garantimos a oportunidade de presenciar a imensa diversidade do
+    mundo que nos rodeia. Continuaremos a batalhar pela defesa dos direitos dos
+    animais e pela permanência dos seus habitats.
+  </p>
+  <br /><br />
+  <h2 class="text_title_about">O nosso símbolo:</h2>
+  <br />
+  <img
+    class="center"
+    src="{%static 'Animals\tigerFace.jpg' %}"
+    alt="fotoTigre"
+    style="width: 50%; height: auto"
+  />
+  <br />
+  <p class="text_about">
+    Vindo dos confins da Ásia, o tigre é um animal extremamente admirado. Como
+    símbolo de Sabedoria e Proteção, inspirou os fundadores do ZOO, a cumprirem
+    sempre com os seus deveres para o bem do mundo animal. Por isso, é ele que
+    representa o ZOO e todas as ambições audaciosas de ir onde nunca ninguém
+    foi.
+  </p>
+  <br /><br />
+</div>
+
 {% endblock %}

@@ -11,4 +11,8 @@ urlpatterns = [
     path('about',views.render_about, name='about'),
     path('noticias',views.render_noticias, name='listagem_noticias'),
     path('noticia/<int:noticia_id>',views.render_detalhe_noticia, name='detalhe_noticia'),
+    path('shop',views.render_shop, name='shop'),
+    path('<int:produto_id>',views.render_produto, name='produto'),
+    path('addProductToCart',views.addProductToCart, name='addProductToCart'),
+    path('getProductsInCart',views.getProductsInCart, name='getProductsInCart'),
 ]

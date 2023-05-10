@@ -22,7 +22,8 @@ class Produto(models.Model):
     designacao = models.CharField(max_length=50)
     preco = models.FloatField()
     categoria = models.CharField(choices=TIPOS_PRODUTO, max_length=1)
-    imagem = models.FileField(upload_to="produtos", null=True)
+    imagem = models.FileField(upload_to="Products", null=True)
+    descricao = models.CharField(max_length=100)
 
 
 class Fatura(models.Model):
