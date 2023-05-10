@@ -14,6 +14,12 @@
 
     {%block head%} {%endblock%}
     <style>
+      a {
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
       .carousel-indicators [data-bs-target] {
         width: 15px;
         height: 15px;
@@ -55,7 +61,12 @@
     <nav class="navbar sticky-top navbar-expand-lg">
       <div class="container">
         <a href="" class="navbar-brand">
-          <img src="zoo_badge.png" alt="zoo_badge" width="40px" height="40px" />
+          <img
+            src="{% static 'zoo_badge.png' %}"
+            alt="zoo_badge"
+            width="40px"
+            height="40px"
+          />
         </a>
         <button
           class="navbar-toggler"
@@ -71,7 +82,12 @@
         <div class="collapse navbar-collapse" id="navbarContent">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item">
-              <a href="" class="nav-link active" aria-current="page">Início</a>
+              <a
+                href="{% url 'ZOO_App:index' %}"
+                class="nav-link active"
+                aria-current="page"
+                >Início</a
+              >
             </li>
             <li class="nav-item">
               <a href="{% url 'ZOO_App:listagem_animais' %}" class="nav-link"
@@ -79,7 +95,9 @@
               >
             </li>
             <li class="nav-item">
-              <a href="pagina das notícias" class="nav-link">Notícias</a>
+              <a href="{% url 'ZOO_App:listagem_noticias' %}" class="nav-link"
+                >Notícias</a
+              >
             </li>
             <li class="nav-item">
               <a href="{% url 'ZOO_App:about' %}" class="nav-link"
@@ -99,7 +117,12 @@
                 data-bs-toggle="dropdown"
                 aria-expanded="false"
               >
-                <img alt="person_circle" width="30px" height="30px" />
+                <img
+                  src="{% static 'bot.png' %}"
+                  alt="person_circle"
+                  width="30px"
+                  height="30px"
+                />
               </a>
               <div
                 class="dropdown-menu dropdown-menu-end"
@@ -167,100 +190,147 @@
     </div>
     {% block conteudo %}
     <div class="row w-100 g-0">
-      <p style="background-color: aqua; width: 100%">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
-        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
-        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
-        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
-        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
-        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
-      </p>
-      <p style="background-color: aqua; width: 100%">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
-        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
-        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
-        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
-        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
-        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
-      </p>
-      <p style="background-color: aqua; width: 100%">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
-        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
-        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
-        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
-        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
-        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
-      </p>
-      <p style="background-color: aqua; width: 100%">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
-        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
-        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
-        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
-        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
-        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
-      </p>
-      <p style="background-color: aqua; width: 100%">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
-        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
-        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
-        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
-        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
-        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
-      </p>
-      <p style="background-color: aqua; width: 100%">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
-        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
-        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
-        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
-        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
-        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
-      </p>
-      <p style="background-color: aqua; width: 100%">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
-        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
-        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
-        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
-        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
-        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
-      </p>
-      <p style="background-color: aqua; width: 100%">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
-        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
-        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
-        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
-        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
-        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
-      </p>
-      <p style="background-color: aqua; width: 100%">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
-        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
-        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
-        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
-        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
-        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
-      </p>
-      <p style="background-color: aqua; width: 100%">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
-        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
-        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
-        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
-        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
-        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
-      </p>
-      <p style="background-color: aqua; width: 100%">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Illo nemo
-        nostrum sapiente. Quas voluptate, soluta quaerat voluptates suscipit
-        voluptatum adipisci aperiam. Neque beatae repellendus voluptatem
-        doloribus fugiat a. Amet voluptates necessitatibus reiciendis. Commodi
-        illo mollitia quod, necessitatibus nulla molestias qui vel voluptas
-        quibusdam beatae rerum tempora laborum suscipit nisi impedit.
-      </p>
-      <p style="background-color: aqua; width: 100%">
-        Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus
-        sapiente voluptatum quod nostrum nulla excepturi temporibus quis
-        consectetur sunt. Ratione iusto animi cupiditate laudantium neque vero
-        non? Corporis, magni delectus.
-      </p>
+      <div id="carousel" class="carousel slide mb-3">
+        <div class="carousel-indicators">
+          <button
+            type="button"
+            data-bs-target="#carousel"
+            data-bs-slide-to="0"
+            class="active"
+            aria-current="true"
+            aria-label="Slide 1"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#carousel"
+            data-bs-slide-to="1"
+            aria-label="Slide 2"
+          ></button>
+          <button
+            type="button"
+            data-bs-target="#carousel"
+            data-bs-slide-to="2"
+            aria-label="Slide 3"
+          ></button>
+        </div>
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="{% static 'bot.png' %}" class="d-block w-100" alt="..." />
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'bot.png' %}" class="d-block w-100" alt="..." />
+          </div>
+          <div class="carousel-item">
+            <img src="{% static 'bot.png' %}" class="d-block w-100" alt="..." />
+          </div>
+        </div>
+        <button
+          class="carousel-control-prev"
+          type="button"
+          data-bs-target="#carousel"
+          data-bs-slide="prev"
+        >
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button
+          class="carousel-control-next"
+          type="button"
+          data-bs-target="#carousel"
+          data-bs-slide="next"
+        >
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+      </div>
+      <div class="row justify-content-center my-sm-3 w-100">
+        <div class="col-sm-4 gx-1">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-2 flex-center-v">
+                  <img
+                    src="alarm-clock-icon.png"
+                    alt="alarm-clock"
+                    height="30px"
+                    width="30px"
+                  />
+                </div>
+                <div class="col">
+                  <h5 class="card-title">Horário</h5>
+                  <p class="card-text">
+                    Aberto das 09:00 até 18:00 todos os dias.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4 gx-1">
+          <div class="card">
+            <div class="card-body">
+              <div class="row">
+                <div class="col-md-2 flex-center-v">
+                  <img
+                    src="thermometer-icon.png"
+                    alt="thermometer"
+                    width="30px"
+                    height="30px"
+                  />
+                </div>
+                <div class="col">
+                  <h5 class="card-title">Temperatura</h5>
+                  <p class="card-text">Estão 12 graus no local do zoo.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer style="background-color: black">
+        <div class="row justify-content-center w-100">
+          <div
+            class="col-sm-4 col-md col-sm-4 col-12 col pt-5 mx-5"
+            style="color: #fff"
+          >
+            <h5>Find us</h5>
+            <p style="padding-bottom: 10px">
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
+              at ex velit dolorum inventore sequi, repudiandae, ea, hic fugiat
+              placeat ab vero distinctio aspernatur porro consequuntur
+              voluptatum saepe amet temporibus.
+            </p>
+          </div>
+          <div
+            class="col-sm-4 col-md col-sm-4 col-12 col pt-5 mx-5"
+            style="color: #fff"
+          >
+            <h5>Quick Links</h5>
+            <ul style="list-style-type: none; margin: 0px; padding-left: 0px">
+              <li>
+                <a href="" class="link-primary">Teste1</a>
+              </li>
+              <li><a href="" class="link-primary">Teste2</a></li>
+            </ul>
+          </div>
+        </div>
+      </footer>
+      <!-- <div class="row justify-content-center">
+        <div class="col-6 align-items-center">
+          <div class="card text-center" style="width: 40rem">
+            <div class="card-body">
+              <div class="row justify-content-center">
+                <div class="col-4">
+                  <p>Teste</p>
+                </div>
+                <div class="col-4">
+                  <p>teste</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> -->
     </div>
     <!-- <nav
       class="navbar navbar-expand-lg fixed-top"

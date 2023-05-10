@@ -6,6 +6,7 @@
 {%block head%}
 <link rel="stylesheet" href="{%static 'css\styleProduct.css' %}">
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
 {%endblock%}
 
 {%block conteudo%}
@@ -17,22 +18,48 @@
     </div>
     <div class="product-info" style="margin-left: 45%; width: 50%;">
         <h3 class="product-name">{{produto.designacao}}</h3>
-        <p class="product-description">Descricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaaodescricaoaodescricao
-            descricaodescricaodescricaodescricaodescricaodescricaodescricaodescricao
-            descricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaodescricao
-            descricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaodes
-            descricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaodescricaodescricao
-        </p>
+        <p class="product-description">{{produto.descricao}}</p>
 
         <br><br><br><br><br><br>
         <h3 class="product-price"> {{produto.preco}} € </h3>
         
+        {%if request.user.is_authenticated%}
         <form action="{% url 'ZOO_App:addProductToCart' %}" method="post">
             {% csrf_token %}
-            <button name="produto_id" type="submit" value="{{ produto.id }}" class="add-cart">Add to cart</button>
+            <input type="number" value="1" name="quantidade">
+            <div class="add-cartdiv">
+                <button name="produto_id" id="b-jquery" type="submit" value="{{ produto.id }}" class="add-cart">Add to cart</button>
+            </div>
         </form>
+        {% else %}
+        <div class="add-cartdiv">
+            <button name="produto_id" id="b-jquery" onclick="alertLoginRequired()" class="add-cart">Add to cart</button>
+        </div>
+        {% endif %}
+      
     </div>
 </div>
+<script>
+    function alertLoginRequired() {
+        alert("Hello! Login Required!");
+    }
 
+    $(document).ready(function(){
+        $(".add-cart").hover(
+            function(){$(this).filter(':not(:animated)').animate({width:"110%", height:"110%"}, 400);},
+            function(){$(this).filter(':not(:animated)').animate({width:"120%", height:"120%"}, 400);}
+        );
+        /*$(".add-cart").mouseenter(
+            function(){$(this).filter(':not(:animated)').animate({width:"110%", height:"110%"}, 500);}
+        );
+        $(".add-cart").mouseleave(
+            function(){$(this).filter(':not(:animated)').animate({width:"120%", height:"120%"}, 500);}
+        );*/
+
+
+    });
+  
+
+</script>
 
 {%endblock%}
