@@ -61,6 +61,10 @@ def render_logout(request):
 def render_about(request):
     return render(request, 'ZOO_App/about.html')
 
+def render_precario(request):
+    bilhetes = Bilhete.objects.all()
+    return render(request, 'ZOO_App/precario.html')
+
 def render_shop(request):
     product_list = Produto.objects.all()
     context = {'product_list': product_list,
