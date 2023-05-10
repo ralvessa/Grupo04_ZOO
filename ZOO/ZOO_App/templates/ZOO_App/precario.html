@@ -1,0 +1,130 @@
+{%extends "./index.html"%} {%block titulo%} Preçário {% endblock %} {%block head%}
+ {% load static %}
+<link rel="stylesheet" href="{%static 'css/style.css' %}" />
+<style>
+
+
+.vertical-carousel{
+    max-width: 1650px;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+.carousel-images{
+    display: flex;
+    animation: carousel 10s linear infinite;
+}
+
+.carousel-img{
+    display: block;
+    object-fit: cover;
+    width: 330px;
+}
+@keyframes carousel {
+    100%
+    {
+        transform: translateX(calc(-330px*5));
+    }
+}
+.title{
+        color: black;
+        font-size: 3.5vw;
+        text-align: center;
+      
+}
+      
+    
+</style>
+{%endblock %} {%block conteudo%}
+<div style="position: relative">
+  <img
+    src="{%static 'Animals\bird.jpg' %}"
+    alt="ups"
+    style="width: 100%; height: auto"
+  />
+
+<h1 class="title">Preços</h1>
+
+
+<table>
+  <tr>
+    <th>Bilhete</th>
+    <th>Preço</th>
+  </tr>
+  <tr>
+    <td>Criança (até 2 anos)</td>
+    <td>Grátis</td>
+  </tr>
+  <tr>
+    <td>Criança (dos 3 aos 12 anos)</td>
+    <td>17,00€</td>
+  </tr>
+  <tr>
+    <td>Adulto (dos 13 aos 64 anos)</td>
+    <td>27,00€</td>
+  </tr>
+  <tr>
+    <td>Adulto (a partir dos 65 anos)</td>
+    <td>23,00€</td>
+  </tr>
+</table>
+
+<div class="vertical-carousel">
+  <div class="carousel-images">
+    <img
+      src="{%static 'ZooImgs\feedingDeer.jpg' %}"
+      alt=""
+      class="carousel-img"
+    />
+    <img
+      src="{%static 'ZooImgs\flamingos.jpg' %}"
+      alt=""
+      class="carousel-img"
+    />
+    <img
+      src="{%static 'ZooImgs\giraffeAndZebra.jpg' %}"
+      alt=""
+      class="carousel-img"
+    />
+    <img
+      src="{%static 'ZooImgs\feedingDeer.jpg' %}"
+      alt=""
+      class="carousel-img"
+    />
+    <img
+      src="{%static 'ZooImgs\flamingos.jpg' %}"
+      alt=""
+      class="carousel-img"
+    />
+
+     <img
+      src="{%static 'ZooImgs\feedingDeer.jpg' %}"
+      alt=""
+      class="carousel-img"
+    />
+    <img
+      src="{%static 'ZooImgs\flamingos.jpg' %}"
+      alt=""
+      class="carousel-img"
+    />
+    <img
+      src="{%static 'ZooImgs\giraffeAndZebra.jpg' %}"
+      alt=""
+      class="carousel-img"
+    />
+    <img
+      src="{%static 'ZooImgs\feedingDeer.jpg' %}"
+      alt=""
+      class="carousel-img"
+    />
+    <img
+      src="{%static 'ZooImgs\flamingos.jpg' %}"
+      alt=""
+      class="carousel-img"
+    />
+    
+    
+  </div>
+</div>
+
+{% endblock %}

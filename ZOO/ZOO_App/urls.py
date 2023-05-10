@@ -15,4 +15,5 @@ urlpatterns = [
     path('<int:produto_id>',views.render_produto, name='produto'),
     path('addProductToCart',views.addProductToCart, name='addProductToCart'),
     path('getProductsInCart',views.getProductsInCart, name='getProductsInCart'),
+    path('precario',views.render_precario, name='precario'),
 ]

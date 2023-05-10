@@ -100,6 +100,10 @@ def render_noticias(request):
 
 def render_detalhe_noticia(request):
     return
+def render_precario(request):
+    bilhetes = Bilhete.objects.all()
+    return render(request, 'ZOO_App/precario.html')
+
 def render_shop(request):
     product_list = Produto.objects.all()
     context = {'product_list': product_list,
