@@ -14,21 +14,16 @@ class Utilizador(models.Model):
 
 
 class Produto(models.Model):
-    TIPOS_PRODUTO = [
-        ("R","Roupa"),
-        ("U","Utensílios"),
-        ("P","Peluches"),
-    ]
     designacao = models.CharField(max_length=50)
     preco = models.FloatField()
-    categoria = models.CharField(choices=TIPOS_PRODUTO, max_length=1)
+    categoria = models.CharField(max_length=50)
     imagem = models.FileField(upload_to="Products", null=True)
     descricao = models.CharField(max_length=100)
 
 
 class Fatura(models.Model):
     data = models.DateTimeField()
-    preco_total = models.IntegerField()
+    preco_total = models.FloatField()
     utilizador = models.ForeignKey(Utilizador, on_delete=models.DO_NOTHING)
 
 
@@ -38,7 +33,7 @@ class FaturaProduto_pk(models.Model):
 
     fatura = models.ForeignKey(Fatura, on_delete=models.DO_NOTHING)
     produto = models.ForeignKey(Produto, on_delete=models.DO_NOTHING)
-
+    
 
 class FaturaProduto(models.Model):
     faturaproduto_pk = models.ForeignKey(FaturaProduto_pk, on_delete=models.RESTRICT)
@@ -59,14 +54,9 @@ class ProdutoCarinhoCompras(models.Model):
 
 
 class Bilhete(models.Model):
-    INTERVALOS_IDADE = [
-        ("B","Bebé"),
-        ("C", "Criança"),
-        ("A", "Adulto"),
-        ("S", "Sénior")
-    ]
-    intervalo_idade = models.CharField(max_length=1, choices=INTERVALOS_IDADE)
-    preco = models.IntegerField()
+
+    intervalo_idade = models.CharField(max_length=50)
+    preco = models.FloatField()
 
 
 class BilheteUtilizador(models.Model):
@@ -79,8 +69,8 @@ class BilheteUtilizador(models.Model):
 
 class Donativo(models.Model):
     utilizador = models.ForeignKey(Utilizador, on_delete=models.DO_NOTHING)
-    quantidade = models.IntegerField()
-    data = models.DateField()
+    quantidade = models.FloatField()
+    data = models.DateTimeField()
 
 
 class Tag(models.Model):
