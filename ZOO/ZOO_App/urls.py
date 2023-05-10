@@ -9,4 +9,6 @@ urlpatterns = [
     path('registar', views.render_register, name='registar'),
     path('logout', views.render_logout, name='logout'),
     path('about',views.render_about, name='about'),
+    path('noticias',views.render_noticias, name='listagem_noticias'),
+    path('noticia/<int:noticia_id>',views.render_detalhe_noticia, name='detalhe_noticia'),
 ]
