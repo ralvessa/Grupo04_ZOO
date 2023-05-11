@@ -27,6 +27,11 @@
     text-align: right;
 }
 
+.shop-content-w-filter{
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, auto));
+    gap: 30px;
+}
 .shop-content{
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(350px, auto));
@@ -62,4 +67,5 @@
     margin-top: 30px;
     margin-bottom: 40px;
   }
+
 
