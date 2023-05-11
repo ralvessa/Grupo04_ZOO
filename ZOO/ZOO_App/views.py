@@ -98,8 +98,12 @@ def render_noticias(request):
     return render(request, 'ZOO_App/listagem_noticias.html', {'noticias': lista_noticias_total,'recomendadas': lista_noticias_recomendadas[0:4]})
 
 
-def render_detalhe_noticia(request):
-    return
+def render_detalhe_noticia(request, noticia_id):
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
+    if request.user.is_authenticated:
+        return
+        #TODO implementar logica de visualizaçao da noticia
+    return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia})
 def render_shop(request):
     product_list = Produto.objects.all()
     context = {'product_list': product_list,
