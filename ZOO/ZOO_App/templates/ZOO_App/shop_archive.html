@@ -20,12 +20,17 @@
             <h2 class="section-title">Shop Products</h2>
             
             <div class="shop-content-w-filter">
-                <aside class="filters" style="width: 30%;">
-                    <p>filters</p>
+                <aside class="filters">
+                    <h3 style="justify-content: center;">Filters</h3>
+                    {% for produto in product_types %}
+                    <input type="checkbox" id="type1" name="type1" value="{{produto}}" checked onchange="checkFilters(this)">
+                    <label for="type1"> {{produto}}</label><br>
+                    {% endfor %}
+
                 </aside>
                 <div class="shop-content">
                     {% for produto in product_list %}
-                        <a class="product-box" href="{% url 'ZOO_App:produto' produto.id%}">
+                        <a class="product-box" name="{{produto.categoria}}" href="{% url 'ZOO_App:produto' produto.id%}">
                             <img src="{% static produto.imagem.url %}" alt="" class="product-image">
                             <h2 class="product-title">{{produto.designacao}}</h2>
                             <h4 class="product-price"> {{produto.preco}} € </h4>
@@ -36,6 +41,32 @@
         </section>
     </div>
     
+    <script>
+
+        function checkFilters(checkboxElem) {
+            const products = document.getElementsByClassName("product-box") 
+            var display="" 
+            if (checkboxElem.checked) {
+                display = "block"
+            } else {
+                display = "none"
+            }
+            //alert(products.length);
+            //alert(display);
+            for (let index = 0; index < products.length; index++) {
+                //alert("id" + products[index].name)
+                //alert("check" + checkboxElem.value)
+                if(products[index].name == checkboxElem.value){
+                    products[index].style.display=display
+                    //alert(products[index] + " " + products[index].style.display)
+                }
+                
+            }
+
+            //url
+        }
+                
+    </script>
 
     
     {% endblock %}

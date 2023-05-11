@@ -61,8 +61,8 @@ def render_logout(request):
     return HttpResponseRedirect(reverse('ZOO_App:login'))
 
 def render_about(request):
-    dict = getProductsInCart(request)
-    return render(request, 'ZOO_App/about.html', {'all' :dict})
+    list = getProductsInCart(request)
+    return render(request, 'ZOO_App/about.html', {'all' :list})
 
 
 def render_noticias(request):
@@ -108,8 +108,13 @@ def render_precario(request):
 
 def render_shop(request):
     product_list = Produto.objects.all()
-    dict = getProductsInCart(request)
-    context = {'product_list': product_list,'all' :dict
+    list = getProductsInCart(request)
+    product_types=  []
+    for product in product_list:
+        if product.categoria not in product_types:
+            product_types.append(product.categoria)
+
+    context = {'product_list': product_list,'all' :list, "product_types": product_types
     }
     return render(request, 'ZOO_App/shop_archive.html', context)
 
@@ -132,15 +137,12 @@ def addProductToCart(request):
             try:
                 pcc_pk = ProdutoCarinhoCompras_pk.objects.get(produto=produto, utilizador=utilizador)
             except ProdutoCarinhoCompras_pk.DoesNotExist:
-                pcc_pk2 = ProdutoCarinhoCompras_pk(produto=produto, utilizador=utilizador)
+                pcc_pk2 = ProdutoCarinhoCompras_pk(produto=produto, utilizador=utilizador, quantidade = quantidade)
                 pcc_pk2.save()
-                pcc1 = ProdutoCarinhoCompras(produtocarinhocompras_pk=pcc_pk2, quantidade=quantidade)
-                pcc1.save()
                 return HttpResponseRedirect(reverse('ZOO_App:shop'))
             #pcc_pk = get_object_or_404(ProdutoCarinhoCompras_pk, pk=questao_id)
-            pcc = get_object_or_404(ProdutoCarinhoCompras, produtocarinhocompras_pk=pcc_pk)
-            pcc.quantidade+=int('0' + quantidade)
-            pcc.save()
+            pcc_pk.quantidade+=int('0' + quantidade)
+            pcc_pk.save()
             return HttpResponseRedirect(reverse('ZOO_App:shop'))
         else:
             print("Produto selecionado não existe")
@@ -150,15 +152,15 @@ def addProductToCart(request):
 
 def auxGetProductsInCart(utilizador):
     pcc_pk = ProdutoCarinhoCompras_pk.objects.filter(utilizador=utilizador)
-    dict={}
+    list=[]
     for item in pcc_pk:
-        dict[item]=ProdutoCarinhoCompras.objects.get(produtocarinhocompras_pk=item)
-    return dict    
+        list.append(item)
+    return list  
 
 def getProductsInCart(request):
     product_list = Produto.objects.all()
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
-    dict = auxGetProductsInCart(utilizador)
+    list = auxGetProductsInCart(utilizador)
     
 #    pcc_pk = ProdutoCarinhoCompras_pk.objects.filter(utilizador=utilizador)
 #    dict={}
@@ -170,75 +172,71 @@ def getProductsInCart(request):
 
     #return render(request, 'ZOO_App/shop_archive.html', {'pcc_pk':pcc_pk, 'pcc': list, 'product_list': product_list})
     #return HttpResponse("{% for key, value in " + dict + ".items %}")
-    return dict
+    return list
     #return render(request, 'ZOO_App/shop_archive.html', {'all':dict, 'product_list': product_list})
 
 def render_purchase(request):
     #utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     #dict = auxGetProductsInCart(utilizador)
-    dict = getProductsInCart(request)
-    return render(request, 'ZOO_App/purchase.html', {'all':dict})
+    list = getProductsInCart(request)
+    return render(request, 'ZOO_App/purchase.html', {'all':list})
 
 def finishPurchase(request):
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
-    dict = auxGetProductsInCart(utilizador)
+    list = auxGetProductsInCart(utilizador)
     current_datetime = timezone.now()  
-    precototal = getTotalPrice(dict)
+    precototal = getTotalPrice(list)
     fatura = Fatura(data=current_datetime, preco_total=int(precototal), utilizador=utilizador)
     fatura.save()
-    for key, value in dict.items():
-        faturaprodutopk = FaturaProduto_pk(fatura= fatura, produto=key.produto)
+    for item in list:
+        faturaprodutopk = FaturaProduto_pk(fatura= fatura, produto=item.produto, quantidade=item.quantidade)
         faturaprodutopk.save()
-        faturaproduto = FaturaProduto(faturaproduto_pk= faturaprodutopk, quantidade=value.quantidade)
-        faturaproduto.save()
     emptyCart(request)    
-    return render(request, 'ZOO_App/about.html') 
+    return render(request, 'ZOO_App/about.html', {'all':list}) 
 
     
 
-def getTotalPrice(dict):
+def getTotalPrice(list):
     sum=0
-    for key, value in dict.items():
-        sum += key.produto.preco * value.quantidade
+    for item in list:
+        sum += item.produto.preco * item.quantidade
     return sum    
 
 def emptyCart(request):
     product_list = Produto.objects.all()
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
-    dict = auxGetProductsInCart(utilizador) 
-    for key, value in dict.items():
-        value.delete()
-        key.delete()
+    list = auxGetProductsInCart(utilizador) 
+    for item in list:
+        item.delete()
     return render(request, 'ZOO_App/shop_archive.html', {'product_list': product_list}) 
     
 def deleteProductFromCart(request, produto_id):
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     produto = get_object_or_404(Produto, pk=produto_id)
-    dict = auxGetProductsInCart(utilizador) 
-    for key, value in dict.items():
-        if key.produto == produto:
-            value.delete()
-            key.delete()
+    list = auxGetProductsInCart(utilizador) 
+    for item in list:
+        if item.produto == produto:
+            item.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
     #return getProductsInCart(request)   
 def takeProductFromCart(request, produto_id):
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     produto = get_object_or_404(Produto, pk=produto_id)
-    dict = auxGetProductsInCart(utilizador) 
-    for key, value in dict.items():
-        if key.produto == produto:
-            value.quantidade -=1
-            value.save()
+    list = auxGetProductsInCart(utilizador) 
+    for item in list:
+        if item.produto == produto:
+            item.quantidade -=1
+            item.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def sumProductToCart(request, produto_id):
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     produto = get_object_or_404(Produto, pk=produto_id)
-    dict = auxGetProductsInCart(utilizador) 
-    for key, value in dict.items():
-        if key.produto == produto:
-            value.quantidade +=1
-            value.save()
+    list = auxGetProductsInCart(utilizador) 
+    for item in list:
+        if item.produto == produto:
+            item.quantidade +=1
+            item.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))     
             
     

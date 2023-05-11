@@ -29,12 +29,13 @@
 
 .shop-content-w-filter{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, auto));
+    grid-template-columns: repeat(auto-fit, minmax(300px, auto));
     gap: 30px;
 }
+
 .shop-content{
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(350px, auto));
+    grid-template-columns: repeat(auto-fit, minmax(250px, auto));
     gap: 30px;
 }
 

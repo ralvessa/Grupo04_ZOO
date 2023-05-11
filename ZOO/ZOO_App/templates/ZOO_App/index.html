@@ -188,15 +188,15 @@
       <div class="cart-content">
 
           {%if all%}
-              {% for key, value in all.items %}
+              {% for item in all %}
               
               <div class="cart-box">
                   <!--<img src="" alt="" class="cart-image">--> 
                   <div class="detail-product">
-                      <img src="{% static key.produto.imagem.url %}" alt="" style=" width: 50%; height: 50%;" class="product-cart-image">
-                      <p class="product-cart-price">{{key.produto.preco}} €</p>
-                      <input type="number" value={{value.quantidade}} class="product-quantity">
-                      <a href="{% url 'ZOO_App:deleteProductFromCart' key.produto.id%}" class="btn btn-secondary btn-checkout">
+                      <img src="{% static item.produto.imagem.url %}" alt="" style=" width: 50%; height: 50%;" class="product-cart-image">
+                      <p class="product-cart-price">{{item.produto.preco}} €</p>
+                      <input type="number" value={{item.quantidade}} class="product-quantity">
+                      <a href="{% url 'ZOO_App:deleteProductFromCart' item.produto.id%}" class="btn btn-secondary btn-checkout">
                           <i class="bx bxs-trash-alt product-remove"></i>
                       </a>   
                   </div>
