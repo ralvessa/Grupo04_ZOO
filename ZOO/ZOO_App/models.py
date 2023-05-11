@@ -33,11 +33,8 @@ class FaturaProduto_pk(models.Model):
 
     fatura = models.ForeignKey(Fatura, on_delete=models.DO_NOTHING)
     produto = models.ForeignKey(Produto, on_delete=models.DO_NOTHING)
+    quantidade = models.IntegerField(default=0)
     
-
-class FaturaProduto(models.Model):
-    faturaproduto_pk = models.ForeignKey(FaturaProduto_pk, on_delete=models.RESTRICT)
-    quantidade = models.IntegerField()
 
 
 class ProdutoCarinhoCompras_pk(models.Model):
@@ -46,11 +43,7 @@ class ProdutoCarinhoCompras_pk(models.Model):
 
     produto = models.ForeignKey(Produto, on_delete=models.DO_NOTHING)
     utilizador = models.ForeignKey(Utilizador, on_delete=models.DO_NOTHING)
-
-
-class ProdutoCarinhoCompras(models.Model):
-    produtocarinhocompras_pk = models.ForeignKey(ProdutoCarinhoCompras_pk, on_delete=models.RESTRICT)
-    quantidade = models.IntegerField()
+    quantidade = models.IntegerField(default = 0)
 
 
 class Bilhete(models.Model):
@@ -98,12 +91,8 @@ class UtilizadorNoticia_pk(models.Model):
 
     utilizador = models.ForeignKey(Utilizador, on_delete=models.DO_NOTHING)
     noticia = models.ForeignKey(Noticia, on_delete=models.DO_NOTHING)
-
-
-class utilizadorNoticia(models.Model):
-    utilizadornoticia_pk = models.ForeignKey(UtilizadorNoticia_pk, on_delete=models.RESTRICT)
-    data = models.DateField()
-
+    data = models.DateField(default= datetime.now)
+  
 
 class Especie(models.Model):
     VALORES_CLASSE = [
