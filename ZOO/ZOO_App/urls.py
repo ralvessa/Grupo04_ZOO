@@ -9,6 +9,8 @@ urlpatterns = [
     path('registar', views.render_register, name='registar'),
     path('logout', views.render_logout, name='logout'),
     path('about',views.render_about, name='about'),
+    path('noticias',views.render_noticias, name='listagem_noticias'),
+    path('noticia/<int:noticia_id>',views.render_detalhe_noticia, name='detalhe_noticia'),
     path('shop',views.render_shop, name='shop'),
     path('<int:produto_id>/render_produto',views.render_produto, name='produto'),
     path('addProductToCart',views.addProductToCart, name='addProductToCart'),
@@ -19,4 +21,5 @@ urlpatterns = [
     path('<int:produto_id>/deleteProductFromCart',views.deleteProductFromCart, name='deleteProductFromCart'),
     path('<int:produto_id>/takeProductFromCart',views.takeProductFromCart, name='takeProductFromCart'),
     path('<int:produto_id>/sumProductToCart',views.sumProductToCart, name='sumProductToCart'),
+    path('precario',views.render_precario, name='precario'),
 ]
