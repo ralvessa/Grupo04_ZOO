@@ -104,6 +104,12 @@ def render_detalhe_noticia(request, noticia_id):
         return
         #TODO implementar logica de visualizaçao da noticia
     return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia})
+def render_detalhe_noticia(request):
+    return
+def render_precario(request):
+    bilhetes = Bilhete.objects.all()
+    return render(request, 'ZOO_App/precario.html')
+
 def render_shop(request):
     product_list = Produto.objects.all()
     context = {'product_list': product_list,
