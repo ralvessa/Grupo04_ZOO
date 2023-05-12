@@ -116,8 +116,8 @@
               >
             </li>
             <li class="nav-item">
-              <a href="{% url 'ZOO_App:listagem_animais' %}" class="nav-link"
-                >Animais</a
+              <a href="{% url 'ZOO_App:precario' %}" class="nav-link"
+                >Preçário</a
               >
             </li>
             <li class="nav-item">
@@ -190,7 +190,7 @@
       </div>
     </nav>
 
-    <div class="cart">
+    <div class="cart" style="z-index: 100;">
       <h2 class="cart-title"> Shopping Cart</h2>
       <div class="cart-content">
 
@@ -212,10 +212,10 @@
         
           
           <div class="cart-total">
-              <h3 class="cart-total-title"> Total</h3>
-              <h3 class="cart-total-price"> </h3>
-              <a href="{% url 'ZOO_App:purchase'%}" class="btn btn-primary btn-checkout">Ver Carrinho</a>
-              <i class="bx bx-x"></i>
+              <h3 class="cart-total-title" style="display: inline-block;"> Total: </h3>
+              <h3 class="cart-total-price d-inline-block" > </h3>
+              <br>
+              <a href="{% url 'ZOO_App:purchase'%}" class="btn btn-primary btn-checkout mb-3">Ver Carrinho</a>
           </div>
           {% endif %}
       </div>

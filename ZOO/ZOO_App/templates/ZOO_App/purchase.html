@@ -24,16 +24,16 @@
                             <img src="{% static item.produto.imagem.url %}" alt="" style=" width: 60%; height: auto; margin-left: 20%; margin-right: 20%;" class="product-cart-imagep">
                         </div>
                         <div class="col">
-                            <h2 class="product-cart-pricep">{{item.produto.preco}} €</h2>
-                            <a href="{% url 'ZOO_App:takeProductFromCart' item.produto.id%}" class="btn btn-checkout">
+                            <h2 class="product-cart-pricep mt-4">{{item.produto.preco}} €</h2>
+                            <a href="{% url 'ZOO_App:takeProductFromCart' item.produto.id%}" class="btn btn-checkout d-inline-block">
                                 <i class="bx bxs-minus-circle product-remove"></i>
                             </a> 
-                            <h2 class="product-quantityp">{{item.quantidade}}</h2>
-                            <input type="number" value={{item.quantidade}} class="product-quantitypbad">
-                            <a href="{% url 'ZOO_App:sumProductToCart' item.produto.id%}" class="btn  btn-checkout">
+                            <h3 class="product-quantityp d-inline-block mt-4">Quantidade: {{item.quantidade}}</h3>
+                            <a href="{% url 'ZOO_App:sumProductToCart' item.produto.id%}" class="btn  btn-checkout d-inline-block ">
                                 <i class="bx bxs-plus-circle product-removep"></i>
                             </a> 
-                            <a href="{% url 'ZOO_App:deleteProductFromCart' item.produto.id%}" class="btn btn-secondary btn-checkout">
+                            <br>
+                            <a href="{% url 'ZOO_App:deleteProductFromCart' item.produto.id%}" class="btn btn-secondary btn-checkout mt-4">
                                 <i class="bx bxs-trash-alt product-removep"></i>
                             </a> 
                         </div>
@@ -42,9 +42,9 @@
             {% endfor %}
        
         
-        <div class="cart-totalp row">
-            <h3 class="cart-total-titlep" style=" display:flex; justify-content: right;"> Total: </h3>
-            <h3 class="cart-total-pricep"> h</h3>
+        <div class="cart-totalp float-end">
+            <h3 class="cart-total-titlep" style=" display:inline-block"> Total: </h3>
+            <h3 class="cart-total-pricep" style=" display:inline-block"> </h3>
             <script>
                 function sum() {
                     const prices = document.getElementsByClassName("product-cart-pricep");
@@ -53,8 +53,9 @@
                     let aux="";
                     for (let index = 0; index < prices.length; index++) {
                         aux = prices[index].textContent.substring(0, prices[index].textContent.length-2);
-                        sum += parseFloat(aux) * parseFloat(quantities[index].textContent); 
+                        sum += parseFloat(aux) * parseFloat(quantities[index].textContent.split(": ")[1]); 
                     }
+                    
                     let string = sum.toString();
                     let aux2 = string.split(".")
                     string = aux2[0] + "." + aux2[1].substring(0,2) + " €";
@@ -65,17 +66,17 @@
         </div>
         {% endif %}
     </div>
-
-    <form action="{% url 'ZOO_App:finishPurchase'%}">
+    <br><br>
+    <form action="{% url 'ZOO_App:finishPurchase'%}" method="POST">
 
         {% if user.utilizador.morada %}
 
-        <label for="html">Morada:</label>
+        <label for="address">Morada:</label>
         <input type="text" value="{{user.utilizador.morada}}">
 
         {% else %}
 
-        <label for="css">Morada</label>
+        <label for="address">Morada</label>
         <input type="text" value="">
         
         {% endif %}  
@@ -83,23 +84,22 @@
         <br><br><br>
         {% if user.utilizador.numero_contribuinte %}
 
-        <label for="html">Número de Contribuinte:</label>
+        <label for="cont">Número de Contribuinte:</label>
         <input type="text" name="input_morada" value="{{user.utilizador.numero_contribuinte}}">
 
         {% else %}
 
-        <label for="css">Número de Contribuinte</label>
+        <label for="cont">Número de Contribuinte</label>
         <input type="text" name="input_morada" value="">
               
         {% endif %}
         
         <br>
-        <input type="submit" class="btn btn-primary" value="Finalizar Compra">
+        <input type="submit" class="btn btn-primary mt-3 ms-3" value="Finalizar Compra">
     </form>
     <br>
 
-    <a href="{% url 'ZOO_App:emptyCart'%}" class="btn btn-primary btn-checkout">Empty Cart</a>
-    <a href="{% url 'ZOO_App:purchase'%}" class="btn btn-primary btn-checkout">Cancelar</a>
-    <i class="bx bx-x"></i>
+    <a href="{% url 'ZOO_App:emptyCart'%}" class="btn btn-primary btn-checkout">
+        Esvaziar Carrinho</a>
 </div>
 {%endblock%}
