@@ -1,39 +1,40 @@
-{%extends "./index.html"%} {%block titulo%} Preçário {% endblock %} {%block head%}
- {% load static %}
+{%extends "./index.html"%} {%block titulo%} Preçário {% endblock %} {%block head%} {% load static %}
 <link rel="stylesheet" href="{%static 'css/style.css' %}" />
+
 <style>
-
-
-.vertical-carousel{
+  .vertical-carousel {
     max-width: 1650px;
     margin: 0 auto;
     overflow: hidden;
-}
+  }
 
-.carousel-images{
+  .carousel-images {
     display: flex;
-    animation: carousel 10s linear infinite;
-}
+    animation: carousel 15s linear infinite;
+  }
 
-.carousel-img{
+  .carousel-img {
     display: block;
     object-fit: cover;
     width: 330px;
-}
-@keyframes carousel {
-    100%
-    {
-        transform: translateX(calc(-330px*5));
+  }
+  @keyframes carousel {
+    100% {
+      transform: translateX(calc(-330px * 6));
     }
-}
-.title{
-        color: black;
-        font-size: 3.5vw;
-        text-align: center;
-      
-}
-      
-    
+  }
+  .title {
+    color: black;
+    font-size: 3.5vw;
+    text-align: center;
+  }
+  .mydiv {
+    margin-left: 25%;
+    margin-right: 25%;
+    margin-top: 50px;
+    margin-bottom: 50px;
+    width: 50%;
+  }
 </style>
 {%endblock %} {%block conteudo%}
 <div style="position: relative">
@@ -43,88 +44,230 @@
     style="width: 100%; height: auto"
   />
 
-<h1 class="title">Preços</h1>
+  <h1 class="title">Preços</h1>
 
-
-<table>
-  <tr>
-    <th>Bilhete</th>
-    <th>Preço</th>
-  </tr>
-  <tr>
-    <td>Criança (até 2 anos)</td>
-    <td>Grátis</td>
-  </tr>
-  <tr>
-    <td>Criança (dos 3 aos 12 anos)</td>
-    <td>17,00€</td>
-  </tr>
-  <tr>
-    <td>Adulto (dos 13 aos 64 anos)</td>
-    <td>27,00€</td>
-  </tr>
-  <tr>
-    <td>Adulto (a partir dos 65 anos)</td>
-    <td>23,00€</td>
-  </tr>
-</table>
-
-<div class="vertical-carousel">
-  <div class="carousel-images">
-    <img
-      src="{%static 'ZooImgs\feedingDeer.jpg' %}"
-      alt=""
-      class="carousel-img"
-    />
-    <img
-      src="{%static 'ZooImgs\flamingos.jpg' %}"
-      alt=""
-      class="carousel-img"
-    />
-    <img
-      src="{%static 'ZooImgs\giraffeAndZebra.jpg' %}"
-      alt=""
-      class="carousel-img"
-    />
-    <img
-      src="{%static 'ZooImgs\feedingDeer.jpg' %}"
-      alt=""
-      class="carousel-img"
-    />
-    <img
-      src="{%static 'ZooImgs\flamingos.jpg' %}"
-      alt=""
-      class="carousel-img"
-    />
-
-     <img
-      src="{%static 'ZooImgs\feedingDeer.jpg' %}"
-      alt=""
-      class="carousel-img"
-    />
-    <img
-      src="{%static 'ZooImgs\flamingos.jpg' %}"
-      alt=""
-      class="carousel-img"
-    />
-    <img
-      src="{%static 'ZooImgs\giraffeAndZebra.jpg' %}"
-      alt=""
-      class="carousel-img"
-    />
-    <img
-      src="{%static 'ZooImgs\feedingDeer.jpg' %}"
-      alt=""
-      class="carousel-img"
-    />
-    <img
-      src="{%static 'ZooImgs\flamingos.jpg' %}"
-      alt=""
-      class="carousel-img"
-    />
-    
-    
+  <div class="mydiv">
+    <table class="table table-hover table-striped">
+      <tr>
+        <th>Bilhete</th>
+        <th>Preço</th>
+      </tr>
+      {% for bilhete in bilhete_list %}
+      <tr>
+        <td>{{bilhete.intervalo_idade}}</td>
+        {%if bilhete.preco != 0 %}
+        <td>{{bilhete.preco}} €</td>
+        {%else%}
+        <td>Grátis</td>
+        {%endif%}
+      </tr>
+      {%endfor%}
+    </table>
   </div>
-</div>
 
-{% endblock %}
+  <div class="vertical-carousel">
+    <div class="carousel-images">
+      <img
+        src="{%static 'ZooImgs\feedingDeer.jpg' %}"
+        alt=""
+        class="carousel-img"
+      />
+      <img
+        src="{%static 'ZooImgs\feedingFlamingo.jpg' %}"
+        alt=""
+        class="carousel-img"
+      />
+      <img src="{%static 'ZooImgs\shark.jpg' %}" alt="" class="carousel-img" />
+      <img
+        src="{%static 'ZooImgs\watchingLeopard.jpg' %}"
+        alt=""
+        class="carousel-img"
+      />
+      <img
+        src="{%static 'ZooImgs\feedingGiraffe.jpg' %}"
+        alt=""
+        class="carousel-img"
+      />
+      <img
+        src="{%static 'ZooImgs\aquarium.jpg' %}"
+        alt=""
+        class="carousel-img"
+      />
+
+      <img
+        src="{%static 'ZooImgs\feedingDeer.jpg' %}"
+        alt=""
+        class="carousel-img"
+      />
+      <img
+        src="{%static 'ZooImgs\feedingFlamingo.jpg' %}"
+        alt=""
+        class="carousel-img"
+      />
+      <img src="{%static 'ZooImgs\shark.jpg' %}" alt="" class="carousel-img" />
+      <img
+        src="{%static 'ZooImgs\watchingLeopard.jpg' %}"
+        alt=""
+        class="carousel-img"
+      />
+      <img
+        src="{%static 'ZooImgs\feedingGiraffe.jpg' %}"
+        alt=""
+        class="carousel-img"
+      />
+      <img
+        src="{%static 'ZooImgs\aquarium.jpg' %}"
+        alt=""
+        class="carousel-img"
+      />
+    </div>
+    <h2 style="text-align: center">Venha criar memórias inesquecíveis</h2>
+  </div>
+
+  <div class="mydiv">
+    {% if request.user.is_authenticated %}
+    <table class="table table-hover table-striped">
+      <tr>
+        <th>Bilhete</th>
+        <th>Preço</th>
+      </tr>
+      {% for bilhete in bilhete_list %}
+      <tr>
+        {%if bilhete.preco != 0 %}
+        <td class="idadeRange">{{bilhete.intervalo_idade}}</td>
+        <td class="preco">{{bilhete.preco}} €
+
+          <button class="minus">-</button>
+          <input
+            type="text"
+            value="0"
+            class="numberInput"
+            readonly
+            style="width: 50px; text-align: center"
+          />
+          <button class="plus">+</button>
+
+        </td>
+        {%endif%}
+      </tr>
+      {%endfor%}
+    </table>
+    <p id="total">Total a pagar: 0 €</p>
+
+    <button
+      onclick="popup()"
+      data-bs-target="#bilheteModal"
+      data-bs-toggle="modal"
+      class="btn btn-dark"
+    >
+      Finalizar Compra
+    </button>
+    {% else %}
+      <h4>Para efetuar a compra de bilhetes por favor faça Login</h4>
+    {% endif %}
+  </div>
+
+    <div
+      class="modal fade"
+      id="bilheteModal"
+      tabindex="-1"
+      aria-labelledby="bilheteLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <h3 style="text-align: center" id="bilheteText"></h3>
+          </div>
+          <div class="modal-footer">
+            <a
+              href="#"
+              type="button"
+              id="bilheteCancelar"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </a>
+            <a href="" id="bilheteConfirmar" class="btn btn-primary"
+              >Confirmar</a
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const minusButton = document.getElementsByClassName("minus");
+      const plusButton = document.getElementsByClassName("plus");
+      const numberInput = document.getElementsByClassName("numberInput");
+      const preco = document.getElementsByClassName("preco");
+      const idadeRange = document.getElementsByClassName("idadeRange");
+      var result = 0;
+
+      for (let i = 0; i < minusButton.length; i++) {
+        minusButton[i].addEventListener("click", function () {
+          if (numberInput[i].value > 0) {
+            numberInput[i].value--;
+            calcTotal();
+          }
+        });
+        plusButton[i].addEventListener("click", function () {
+          numberInput[i].value++;
+          calcTotal();
+        });
+      }
+
+      function calcTotal() {
+        result = 0;
+        for (let i = 0; i < numberInput.length; i++) {
+          result +=
+            numberInput[i].value *
+            parseFloat(preco[i].innerHTML.replace("€", "").trim());
+        }
+        document.getElementById("total").textContent =
+          "Total a pagar: " + result + " €";
+      }
+
+      function popup() {
+       
+        if (result != 0) {
+          document.getElementById("bilheteText").innerText ="Tem a certeza que pretende efetuar a seguinte compra? \n\n" + bilheteString();
+          document.getElementById("bilheteConfirmar").style.display = "inline";
+          document.getElementById("bilheteCancelar").style.display = "inline";
+          var url = "{% url 'ZOO_App:bilheteCompra' 1111 2222 3333 %}".replace("1111", numberInput[0].value).replace("2222", numberInput[1].value).replace("3333",numberInput[2].value);
+          document.getElementById("bilheteConfirmar").href = url;
+        } else {
+          document.getElementById("bilheteText").innerText =
+            "Não foram selecionados bilhetes.";
+          document.getElementById("bilheteConfirmar").style.display = "none";
+          
+          document.getElementById("bilheteCancelar").style.display = "none";
+        }
+      }
+
+      function bilheteString() {
+        string = "";
+        for (let i = 0; i < numberInput.length; i++) {
+          if (numberInput[i].value != 0)
+            string +=
+              numberInput[i].value +
+              (numberInput[i].value > 1 ? " Bilhetes " : " Bilhete ") +
+              idadeRange[i].textContent +
+              ".\n";
+        }
+        string += "\nTotal a Pagar: " + result + " €";
+        return string;
+      }
+    </script>
+  
+  {% endblock %}
+</div>
