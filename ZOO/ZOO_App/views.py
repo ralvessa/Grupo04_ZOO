@@ -15,6 +15,9 @@ from .models import *
 
 
 def render_index(request):
+    if request.user.is_authenticated:
+        list = getProductsInCart(request)
+        return render(request, 'ZOO_App/index.html', {'all' :list})
     return render(request, 'ZOO_App/index.html')
 
 
@@ -62,13 +65,16 @@ def render_logout(request):
     return HttpResponseRedirect(reverse('ZOO_App:login'))
 
 def render_about(request):
-    list = getProductsInCart(request)
-    return render(request, 'ZOO_App/about.html', {'all' :list})
+    if request.user.is_authenticated:
+        list = getProductsInCart(request)
+        return render(request, 'ZOO_App/about.html', {'all' :list})
+    return render(request, 'ZOO_App/about.html')
 
 
 def render_noticias(request):
     lista_noticias = Noticia.objects.all()
     if request.user.is_authenticated:
+        listcart = getProductsInCart(request)
         lista_noticias_user = []
         lista_tags_user = []
         lista_tags={}
@@ -97,7 +103,7 @@ def render_noticias(request):
                 if item.descricao.find(searchTerm) == -1 and item.titulo.find(searchTerm) == -1:
                     lista_noticias_recomendadas.remove(item)
         return render(request, 'ZOO_App/listagem_noticias.html',
-                      {'noticias': lista_noticias, 'recomendadas': lista_noticias_recomendadas[0:4]})
+                      {'noticias': lista_noticias, 'recomendadas': lista_noticias_recomendadas[0:4], 'all' :listcart})
     lista_noticias = list(lista_noticias)
     if "searchTerm" in request.POST:
         searchTerm = request.POST["searchTerm"]
@@ -105,7 +111,7 @@ def render_noticias(request):
             if item.descricao.find(searchTerm) == -1 and item.titulo.find(searchTerm) == -1:
                 lista_noticias.remove(item)
     return render(request, 'ZOO_App/listagem_noticias.html',
-                  {'noticias': lista_noticias,})
+                  {'noticias': lista_noticias, 'all' :list})
 
 
     # lista_noticias_total = Noticia.objects.all()
@@ -137,36 +143,44 @@ def render_noticias(request):
 
 def render_detalhe_noticia(request, noticia_id):
     noticia = get_object_or_404(Noticia, pk=noticia_id)
-    utilnotilist = UtilizadorNoticia_pk.objects.filter(noticia=noticia)
-    for item in utilnotilist:
-       print()
+    comments = Comentario.objects.filter(noticia=noticia)
     if request.user.is_authenticated:
         visualizacao = UtilizadorNoticia_pk(utilizador=request.user.utilizador, noticia=noticia)
         visualizacao.save()
-        return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia})
-    return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia})
+        list = getProductsInCart(request)
+        return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia, "comments": comments, 'all' :list})
+    return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia, "comments": comments})
 
 def render_precario(request):
     bilhetes = Bilhete.objects.all()
-    list = getProductsInCart(request)
-    return render(request, 'ZOO_App/precario.html', {'all' :list})
+    if request.user.is_authenticated:
+        list = getProductsInCart(request)
+        return render(request, 'ZOO_App/precario.html', {'bilhete_list' :bilhetes, 'all' :list})
+    return render(request, 'ZOO_App/precario.html', {'bilhete_list' :bilhetes})
 
 def render_shop(request):
     product_list = Produto.objects.all()
-    list = getProductsInCart(request)
+    
     product_types=  []
     for product in product_list:
         if product.categoria not in product_types:
             product_types.append(product.categoria)
 
-    context = {'product_list': product_list,'all' :list, "product_types": product_types
+    if request.user.is_authenticated:
+        list = getProductsInCart(request)
+        context = {'product_list': product_list,'all' :list, "product_types": product_types
+        }
+        return render(request, 'ZOO_App/shop_archive.html', context)
+    context = {'product_list': product_list, "product_types": product_types
     }
     return render(request, 'ZOO_App/shop_archive.html', context)
 
 def render_produto(request, produto_id):
     produto = get_object_or_404(Produto, pk=produto_id)
-    list = getProductsInCart(request)
-    return render(request, 'ZOO_App/product_info.html', {'produto': produto,'all' :list})
+    if request.user.is_authenticated:
+        list = getProductsInCart(request)
+        return render(request, 'ZOO_App/product_info.html', {'produto': produto,'all' :list})
+    return render(request, 'ZOO_App/product_info.html', {'produto': produto})
 
 #@login_required(login_url='/login')
 def addProductToCart(request):
@@ -224,21 +238,23 @@ def getProductsInCart(request):
 def render_purchase(request):
     #utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     #dict = auxGetProductsInCart(utilizador)
-    list = getProductsInCart(request)
-    return render(request, 'ZOO_App/purchase.html', {'all':list})
+    if request.user.is_authenticated:
+        list = getProductsInCart(request)
+        return render(request, 'ZOO_App/purchase.html', {'all':list})
 
 def finishPurchase(request):
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
-    list = auxGetProductsInCart(utilizador)
-    current_datetime = timezone.now()  
-    precototal = getTotalPrice(list)
-    fatura = Fatura(data=current_datetime, preco_total=float(precototal), utilizador=utilizador)
-    fatura.save()
-    for item in list:
-        faturaprodutopk = FaturaProduto_pk(fatura= fatura, produto=item.produto, quantidade=item.quantidade)
-        faturaprodutopk.save()
-    emptyCart(request)    
-    return render(request, 'ZOO_App/about.html', {'all':list}) 
+    if request.user.is_authenticated:
+        list = auxGetProductsInCart(utilizador)
+        current_datetime = timezone.now()  
+        precototal = getTotalPrice(list)
+        fatura = Fatura(data=current_datetime, preco_total=float(precototal), utilizador=utilizador)
+        fatura.save()
+        for item in list:
+            faturaprodutopk = FaturaProduto_pk(fatura= fatura, produto=item.produto, quantidade=item.quantidade)
+            faturaprodutopk.save()
+        emptyCart(request)    
+        return render(request, 'ZOO_App/about.html', {'all':list}) 
 
     
 
@@ -249,71 +265,77 @@ def getTotalPrice(list):
     return sum    
 
 def emptyCart(request):
-    product_list = Produto.objects.all()
-    utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
-    list = auxGetProductsInCart(utilizador) 
-    for item in list:
-        item.delete()
-    return render(request, 'ZOO_App/shop_archive.html', {'product_list': product_list}) 
+    if request.user.is_authenticated:
+        product_list = Produto.objects.all()
+        utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
+        list = auxGetProductsInCart(utilizador) 
+        for item in list:
+            item.delete()
+        return render(request, 'ZOO_App/shop_archive.html', {'product_list': product_list}) 
     
 def deleteProductFromCart(request, produto_id):
-    utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
-    produto = get_object_or_404(Produto, pk=produto_id)
-    list = auxGetProductsInCart(utilizador) 
-    for item in list:
-        if item.produto == produto:
-            item.delete()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-    #return getProductsInCart(request)   
+    if request.user.is_authenticated:
+        utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
+        produto = get_object_or_404(Produto, pk=produto_id)
+        list = auxGetProductsInCart(utilizador) 
+        for item in list:
+            if item.produto == produto:
+                item.delete()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+        #return getProductsInCart(request)   
 def takeProductFromCart(request, produto_id):
-    utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
-    produto = get_object_or_404(Produto, pk=produto_id)
-    list = auxGetProductsInCart(utilizador) 
-    for item in list:
-        if item.produto == produto:
-            item.quantidade -=1
-            item.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+    if request.user.is_authenticated:
+        utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
+        produto = get_object_or_404(Produto, pk=produto_id)
+        list = auxGetProductsInCart(utilizador) 
+        for item in list:
+            if item.produto == produto:
+                item.quantidade -=1
+                item.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 def sumProductToCart(request, produto_id):
-    utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
-    produto = get_object_or_404(Produto, pk=produto_id)
-    list = auxGetProductsInCart(utilizador) 
-    for item in list:
-        if item.produto == produto:
-            item.quantidade +=1
-            item.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))     
+    if request.user.is_authenticated:
+        utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
+        produto = get_object_or_404(Produto, pk=produto_id)
+        list = auxGetProductsInCart(utilizador) 
+        for item in list:
+            if item.produto == produto:
+                item.quantidade +=1
+                item.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))     
             
 def render_minhascompras(request):
-    list = getProductsInCart(request)
-    utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
-    faturas = Fatura.objects.filter(utilizador=utilizador)
-    dict={}
-    print(faturas[0].data)
-    for item in faturas:
-        dict[item]=FaturaProduto_pk.objects.filter(fatura=item)  
-    return render(request, 'ZOO_App/minhascompras.html', {'all' :list, 'fatura':dict})
+    if request.user.is_authenticated:
+        list = getProductsInCart(request)
+        utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
+        faturas = Fatura.objects.filter(utilizador=utilizador)
+        dict={}
+        print(faturas[0].data)
+        for item in faturas:
+            dict[item]=FaturaProduto_pk.objects.filter(fatura=item)  
+        return render(request, 'ZOO_App/minhascompras.html', {'all' :list, 'fatura':dict})
 
 def addComentario(request, noticia_id):
-    if request.method == 'POST':
-        try:
-            comentario = request.POST.get("comment")
-        except KeyError:
-            return render(request, 'ZOO_App/about.html')
-    utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
-    noticia = get_object_or_404(Noticia, pk=noticia_id)
-    current_datetime = timezone.now() 
-    #comentario=""
-    #list = auxGetProductsInCart(utilizador) 
-    noticia_utilizador = UtilizadorNoticia_pk.objects.get(utilizador=utilizador, noticia=noticia)
-    utilizador_comentario = UtilizadorComentario(utilizador_noticia=noticia_utilizador, data=current_datetime, comentario=comentario)
-    utilizador_comentario.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))   
+    if request.user.is_authenticated:
+        if request.method == 'POST':
+            try:
+                comentario = request.POST.get("comment")
+            except KeyError:
+                return render(request, 'ZOO_App/about.html')
+        utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
+        noticia = get_object_or_404(Noticia, pk=noticia_id)
+        current_datetime = timezone.now() 
+        #comentario=""
+        #list = auxGetProductsInCart(utilizador) 
+        utilizador_comentario = Comentario(noticia=noticia, utilizador=utilizador, data=current_datetime, comentario=comentario)
+        utilizador_comentario.save()
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))   
     
     
 @login_required(login_url='/login')
 def render_informacao_pessoal(request):
+    list = getProductsInCart(request)
     user = User.objects.get(id=request.user.id)
     utilizador = Utilizador.objects.get(id=request.user.utilizador.id)
     if request.method == 'POST':
@@ -325,28 +347,29 @@ def render_informacao_pessoal(request):
         if request.user.utilizador.morada != address:
             utilizador.morada = address
             utilizador.save()
-        return render(request, 'ZOO_App/informacao_pessoal.html', {'user': user, 'utilizador': utilizador})
+        return render(request, 'ZOO_App/informacao_pessoal.html', {'user': user, 'utilizador': utilizador, 'all' :list})
     else:
-        return render(request, 'ZOO_App/informacao_pessoal.html', {'user': user, 'utilizador': utilizador})
+        return render(request, 'ZOO_App/informacao_pessoal.html', {'user': user, 'utilizador': utilizador, 'all' :list})
 
 
 @login_required(login_url='/login')
 def render_alterar_password(request):
+    list = getProductsInCart(request)
     if request.method == 'POST':
         old_password = request.POST['old_password']
         new_password = request.POST['new_password']
         new_password2 = request.POST['new_password2']
         user = authenticate(username=request.user.username, password=old_password)
         if user is None:
-            return render(request, 'ZOO_App/alterar_password.html', {'incorrect_password': 'Password incorreta, tente novamente'})
+            return render(request, 'ZOO_App/alterar_password.html', {'incorrect_password': 'Password incorreta, tente novamente', 'all' :list})
         else:
             if new_password != new_password2:
-                return render(request, 'ZOO_App/alterar_password.html', {'incorrect_password': 'Passwords não são iguais'})
+                return render(request, 'ZOO_App/alterar_password.html', {'incorrect_password': 'Passwords não são iguais', 'all' :list})
             else:
                 user.set_password(new_password)
                 user.save()
                 login(request, user)
-                return render(request, 'ZOO_App/informacao_pessoal.html', {'efective_password_change': 'Alterou a sua password com sucesso'})
+                return render(request, 'ZOO_App/informacao_pessoal.html', {'efective_password_change': 'Alterou a sua password com sucesso', 'all' :list})
     else:
-        return render(request, 'ZOO_App/alterar_password.html')
+        return render(request, 'ZOO_App/alterar_password.html', {'all' :list})
 

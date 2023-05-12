@@ -19,7 +19,10 @@
   </div>
 </div>
 
+{% for item in comments %}
+<input type="text" value="{{item.comentario}}" name="comment">
 
+{% endfor%}
 
 
 <form action="{% url 'ZOO_App:addComentario' noticia.id %}" method="POST">
