@@ -56,7 +56,6 @@ class BilheteUtilizador(models.Model):
     bilhete = models.ForeignKey(Bilhete, on_delete=models.DO_NOTHING)
     utilizador = models.ForeignKey(User, on_delete=models.DO_NOTHING)
     data_compra = models.DateTimeField(default=datetime.now)
-    data_bilhete = models.DateField()
     quantidade = models.IntegerField()
 
 
@@ -92,11 +91,14 @@ class UtilizadorNoticia_pk(models.Model):
     utilizador = models.ForeignKey(Utilizador, on_delete=models.DO_NOTHING)
     noticia = models.ForeignKey(Noticia, on_delete=models.DO_NOTHING)
     data = models.DateField(default= datetime.now)
+    like = models.BooleanField(default=False)
 
-class UtilizadorComentario(models.Model):
-    utilizador_noticia = models.ForeignKey(UtilizadorNoticia_pk, on_delete=models.DO_NOTHING)
+class Comentario(models.Model):
+    utilizador = models.ForeignKey(Utilizador, on_delete=models.DO_NOTHING)
+    noticia = models.ForeignKey(Noticia, on_delete=models.DO_NOTHING)
     data = models.DateField(default= datetime.now)
     comentario = models.CharField(max_length=200)
+    
   
 
 class Especie(models.Model):

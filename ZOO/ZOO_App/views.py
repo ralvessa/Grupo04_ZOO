@@ -137,6 +137,9 @@ def render_noticias(request):
 
 def render_detalhe_noticia(request, noticia_id):
     noticia = get_object_or_404(Noticia, pk=noticia_id)
+    utilnotilist = UtilizadorNoticia_pk.objects.filter(noticia=noticia)
+    for item in utilnotilist:
+       print()
     if request.user.is_authenticated:
         try:
             visualizacao = UtilizadorNoticia_pk.objects.get(utilizador=request.user.utilizador, noticia=noticia)
@@ -149,7 +152,7 @@ def render_detalhe_noticia(request, noticia_id):
 def render_precario(request):
     bilhetes = Bilhete.objects.all()
     list = getProductsInCart(request)
-    return render(request, 'ZOO_App/precario.html', {'all' :list})
+    return render(request, 'ZOO_App/precario.html', {'all' :list, 'bilhete_list': bilhetes})
 
 def render_shop(request):
     product_list = Produto.objects.all()
@@ -221,79 +224,89 @@ def getProductsInCart(request):
     return list
     #return render(request, 'ZOO_App/shop_archive.html', {'all':dict, 'product_list': product_list})
 
+
 def render_purchase(request):
-    #utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
-    #dict = auxGetProductsInCart(utilizador)
+    # utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
+    # dict = auxGetProductsInCart(utilizador)
     list = getProductsInCart(request)
-    return render(request, 'ZOO_App/purchase.html', {'all':list})
+    return render(request, 'ZOO_App/purchase.html', {'all': list})
+
 
 def finishPurchase(request):
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     list = auxGetProductsInCart(utilizador)
-    current_datetime = timezone.now()  
+    current_datetime = timezone.now()
     precototal = getTotalPrice(list)
-    fatura = Fatura(data=current_datetime, preco_total=float(precototal), utilizador=utilizador)
+    fatura = Fatura(data=current_datetime, preco_total=float(
+        precototal), utilizador=utilizador)
     fatura.save()
     for item in list:
-        faturaprodutopk = FaturaProduto_pk(fatura= fatura, produto=item.produto, quantidade=item.quantidade)
+        faturaprodutopk = FaturaProduto_pk(
+            fatura=fatura, produto=item.produto, quantidade=item.quantidade)
         faturaprodutopk.save()
-    emptyCart(request)    
-    return render(request, 'ZOO_App/about.html', {'all':list}) 
+    emptyCart(request)
+    return render(request, 'ZOO_App/about.html', {'all': list})
 
-    
 
 def getTotalPrice(list):
-    sum=0
+    sum = 0
     for item in list:
         sum += item.produto.preco * item.quantidade
-    return sum    
+    return sum
+
 
 def emptyCart(request):
     product_list = Produto.objects.all()
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
-    list = auxGetProductsInCart(utilizador) 
+    list = auxGetProductsInCart(utilizador)
     for item in list:
         item.delete()
-    return render(request, 'ZOO_App/shop_archive.html', {'product_list': product_list}) 
-    
+    return render(request, 'ZOO_App/shop_archive.html', {'product_list': product_list})
+
+
 def deleteProductFromCart(request, produto_id):
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     produto = get_object_or_404(Produto, pk=produto_id)
-    list = auxGetProductsInCart(utilizador) 
+    list = auxGetProductsInCart(utilizador)
     for item in list:
         if item.produto == produto:
             item.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
-    #return getProductsInCart(request)   
+    # return getProductsInCart(request)
+
+
 def takeProductFromCart(request, produto_id):
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     produto = get_object_or_404(Produto, pk=produto_id)
-    list = auxGetProductsInCart(utilizador) 
+    list = auxGetProductsInCart(utilizador)
     for item in list:
         if item.produto == produto:
-            item.quantidade -=1
+            item.quantidade -= 1
             item.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
 
 def sumProductToCart(request, produto_id):
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     produto = get_object_or_404(Produto, pk=produto_id)
-    list = auxGetProductsInCart(utilizador) 
+    list = auxGetProductsInCart(utilizador)
     for item in list:
         if item.produto == produto:
-            item.quantidade +=1
+            item.quantidade += 1
             item.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))     
-            
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
 def render_minhascompras(request):
     list = getProductsInCart(request)
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     faturas = Fatura.objects.filter(utilizador=utilizador)
-    dict={}
+    dict = {}
     print(faturas[0].data)
     for item in faturas:
-        dict[item]=FaturaProduto_pk.objects.filter(fatura=item)  
-    return render(request, 'ZOO_App/minhascompras.html', {'all' :list, 'fatura':dict})
+        dict[item] = FaturaProduto_pk.objects.filter(fatura=item)
+    return render(request, 'ZOO_App/minhascompras.html', {'all': list, 'fatura': dict})
+
 
 def addComentario(request, noticia_id):
     if request.method == 'POST':
@@ -303,15 +316,17 @@ def addComentario(request, noticia_id):
             return render(request, 'ZOO_App/about.html')
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     noticia = get_object_or_404(Noticia, pk=noticia_id)
-    current_datetime = timezone.now() 
-    #comentario=""
-    #list = auxGetProductsInCart(utilizador) 
-    noticia_utilizador = UtilizadorNoticia_pk.objects.get(utilizador=utilizador, noticia=noticia)
-    utilizador_comentario = UtilizadorComentario(UtilizadorNoticia_pk=noticia_utilizador, data=current_datetime, comentario=comentario)
+    current_datetime = timezone.now()
+    # comentario=""
+    # list = auxGetProductsInCart(utilizador)
+    noticia_utilizador = UtilizadorNoticia_pk.objects.get(
+        utilizador=utilizador, noticia=noticia)
+    utilizador_comentario = UtilizadorComentario(
+        UtilizadorNoticia_pk=noticia_utilizador, data=current_datetime, comentario=comentario)
     utilizador_comentario.save()
-    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))   
-    
-    
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
 @login_required(login_url='/login')
 def render_informacao_pessoal(request):
     user = User.objects.get(id=request.user.id)
@@ -336,7 +351,8 @@ def render_alterar_password(request):
         old_password = request.POST['old_password']
         new_password = request.POST['new_password']
         new_password2 = request.POST['new_password2']
-        user = authenticate(username=request.user.username, password=old_password)
+        user = authenticate(username=request.user.username,
+                            password=old_password)
         if user is None:
             return render(request, 'ZOO_App/alterar_password.html', {'incorrect_password': 'Password incorreta, tente novamente'})
         else:
@@ -350,3 +366,17 @@ def render_alterar_password(request):
     else:
         return render(request, 'ZOO_App/alterar_password.html')
 
+def bilheteCompra(request,crianca,adulto,senior):
+    if(crianca != 0):
+        bilheteCrianca = BilheteUtilizador(
+            bilhete= Bilhete.objects.get(pk=2), utilizador=User.objects.get(pk=request.user.id), data_bilhete=timezone.now(),quantidade= crianca)
+        bilheteCrianca.save()
+    if(adulto != 0):
+        bilheteAdulto = BilheteUtilizador(
+            bilhete=Bilhete.objects.get(pk=3), utilizador=User.objects.get(pk=request.user.id), data_bilhete=timezone.now(), quantidade=adulto)
+        bilheteAdulto.save()
+    if(senior != 0):
+        bilheteSenior = BilheteUtilizador(
+            bilhete=Bilhete.objects.get(pk=4), utilizador=User.objects.get(pk=request.user.id), data_bilhete=timezone.now(), quantidade=senior)
+        bilheteSenior.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))

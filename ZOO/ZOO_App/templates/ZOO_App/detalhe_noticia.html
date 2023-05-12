@@ -1,4 +1,6 @@
 {%extends "./index.html"%} {% block conteudo %} {% load static %}
+
+
 <div class="container-fluid justify-content-center">
   <p class="text-center fs-3 fw-bolder mt-2">{{noticia.titulo}}</p>
   <div class="row justify-content-center mt-3">
@@ -16,5 +18,15 @@
     </div>
   </div>
 </div>
+
+
+
+
+<form action="{% url 'ZOO_App:addComentario' noticia.id %}" method="POST">
+  {% csrf_token %}
+  <input type="text" value="hey" name="comment">
+  <input type="submit" name="submit" class="btn btn-primary">
+</form>
+
 
 {% endblock %}
