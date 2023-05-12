@@ -144,6 +144,7 @@ def render_noticias(request):
 def render_detalhe_noticia(request, noticia_id):
     noticia = get_object_or_404(Noticia, pk=noticia_id)
     comments = Comentario.objects.filter(noticia=noticia)
+    like_amount = len(UtilizadorNoticia_pk.objects.filter(noticia=noticia, like=True))
     if request.user.is_authenticated:
         try:
             visualizacao = UtilizadorNoticia_pk.objects.get(utilizador=request.user.utilizador, noticia=noticia)
@@ -151,8 +152,8 @@ def render_detalhe_noticia(request, noticia_id):
             visualizacao = UtilizadorNoticia_pk(utilizador=request.user.utilizador, noticia=noticia)
         visualizacao.save()
         list = getProductsInCart(request)
-        return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia, "comments": comments, 'all' :list})
-    return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia, "comments": comments})
+        return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia, "comments": comments, 'all' :list, "like": visualizacao.like, "like_amount": like_amount})
+    return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia, "comments": comments, "like_amount": like_amount})
 
 def render_precario(request):
     bilhetes = Bilhete.objects.all()
@@ -391,14 +392,38 @@ def render_alterar_password(request):
 def bilheteCompra(request,crianca,adulto,senior):
     if(crianca != 0):
         bilheteCrianca = BilheteUtilizador(
-            bilhete= Bilhete.objects.get(pk=2), utilizador=User.objects.get(pk=request.user.id), data_bilhete=timezone.now(),quantidade= crianca)
+            bilhete= Bilhete.objects.get(pk=2), utilizador=User.objects.get(pk=request.user.id),quantidade= crianca)
         bilheteCrianca.save()
     if(adulto != 0):
         bilheteAdulto = BilheteUtilizador(
-            bilhete=Bilhete.objects.get(pk=3), utilizador=User.objects.get(pk=request.user.id), data_bilhete=timezone.now(), quantidade=adulto)
+            bilhete=Bilhete.objects.get(pk=3), utilizador=User.objects.get(pk=request.user.id), quantidade=adulto)
         bilheteAdulto.save()
     if(senior != 0):
         bilheteSenior = BilheteUtilizador(
-            bilhete=Bilhete.objects.get(pk=4), utilizador=User.objects.get(pk=request.user.id), data_bilhete=timezone.now(), quantidade=senior)
+            bilhete=Bilhete.objects.get(pk=4), utilizador=User.objects.get(pk=request.user.id), quantidade=senior)
         bilheteSenior.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
+
+@login_required(login_url='/login')
+def render_adicionar_like(request, noticia_id):
+    utilizador = Utilizador.objects.get(user=request.user)
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
+    comments = Comentario.objects.filter(noticia=noticia)
+    utilizadornoticia = UtilizadorNoticia_pk.objects.get(utilizador=utilizador, noticia=noticia)
+    utilizadornoticia.like = True
+    utilizadornoticia.save()
+    like_amount = len(UtilizadorNoticia_pk.objects.filter(noticia=noticia, like=True))
+    return HttpResponseRedirect(reverse('ZOO_App:detalhe_noticia', args=(noticia_id,)), {'noticia': noticia, "comments": comments, "like": utilizadornoticia.like, "like_amount": like_amount})
+
+
+@login_required(login_url='/login')
+def render_remover_like(request, noticia_id):
+    utilizador = Utilizador.objects.get(user=request.user)
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
+    comments = Comentario.objects.filter(noticia=noticia)
+    utilizadornoticia = UtilizadorNoticia_pk.objects.get(utilizador=utilizador, noticia=noticia)
+    utilizadornoticia.like = False
+    utilizadornoticia.save()
+    like_amount = len(UtilizadorNoticia_pk.objects.filter(noticia=noticia, like=True))
+    return HttpResponseRedirect(reverse('ZOO_App:detalhe_noticia', args=(noticia_id,)), {'noticia': noticia, "comments": comments, "like": utilizadornoticia.like, "like_amount": like_amount})

@@ -1,5 +1,9 @@
 {%extends "./index.html"%} {% block conteudo %} {% load static %}
-
+<style>
+  .like {
+    border-width: 0px;
+  }
+</style>
 
 <div class="container-fluid justify-content-center">
   <p class="text-center fs-3 fw-bolder mt-2">{{noticia.titulo}}</p>
@@ -10,6 +14,27 @@
         alt="imagem da noticia '{{noticia.titulo}}'"
         class="d-block mx-auto"
       />
+    </div>
+    <div class="col-1">
+      {% if request.user.is_authenticated and like %}
+      <a
+        href="{% url 'ZOO_App:remover_like' noticia.id %}"
+        class="like"
+        style="color: #000000; text-decoration: none"
+      >
+        
+        <i class="bx bxs-heart" style="color: #ff0000"></i>
+        {% elif request.user.is_authenticated and not like %}
+        <a
+        href="{% url 'ZOO_App:adicionar_like' noticia.id %}"
+        class="like"
+        style="color: #000000; text-decoration: none"
+      >
+        <i class="bx bxs-heart" style="color: #000000"></i>
+        {% else %}
+        <i class="bx bxs-heart" style="color: #000000"></i>
+        {% endif %} {{like_amount}}
+      </a>
     </div>
   </div>
   <div class="row justify-content-center mt-3">
