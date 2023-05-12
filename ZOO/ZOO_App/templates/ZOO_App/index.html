@@ -10,7 +10,8 @@
       integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
       crossorigin="anonymous"
     />
-
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
     <title>{%block titulo%}Página do ZOO{%endblock%}</title>
 
     {%block head%} {%endblock%}
@@ -54,6 +55,30 @@
         width: 100%;
         background-color: rgb(242, 242, 235);
       }
+
+      .cart{
+          position: fixed;
+          right: 0;
+
+          padding: 20px;
+          min-width: 30vh;
+          width: 25%;
+          min-height: 100vh;
+          max-height: 100%;
+          background-color: white;
+          overflow-x: hidden;
+          overflow-y: auto;
+          display: none;
+      }
+      .cart-total{
+        margin-top: 30px;
+        margin-bottom: 40px;
+      }
+      .cart-title{
+          text-align: center;
+          margin-bottom: 30px;
+      }
+
     </style>
     {% load static %}
     <link rel="stylesheet" href="{%static 'css/style.css' %}" />
@@ -110,6 +135,8 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
+                <i class="bx bx-cart logo nav-link" style="font-size: 200%; margin-right: 10px;" id="cart-icon"></i>
+            
             <li class="dropdown">
               <a
                 href="#"
@@ -131,6 +158,16 @@
               >
                 {% if request.user.is_authenticated %}
                 <a
+                  href="{% url 'ZOO_App:informacao_pessoal' %}"
+                  class="dropdown-item"
+                  >A minha conta</a
+                >
+                <a
+                  href="{% url 'ZOO_App:minhascompras'%}"
+                  class="dropdown-item"
+                  >Minhas Compras</a
+                >
+                <a
                   href=""
                   class="dropdown-item"
                   data-bs-target="#exampleModal"
@@ -151,6 +188,37 @@
         </div>
       </div>
     </nav>
+
+    <div class="cart">
+      <h2 class="cart-title"> Shopping Cart</h2>
+      <div class="cart-content">
+
+          {%if all%}
+              {% for item in all %}
+              
+              <div class="cart-box">
+                  <!--<img src="" alt="" class="cart-image">--> 
+                  <div class="detail-product">
+                      <img src="{% static item.produto.imagem.url %}" alt="" style=" width: 50%; height: 50%;" class="product-cart-image">
+                      <p class="product-cart-price">{{item.produto.preco}} €</p>
+                      <input type="number" value={{item.quantidade}} class="product-quantity">
+                      <a href="{% url 'ZOO_App:deleteProductFromCart' item.produto.id%}" class="btn btn-secondary btn-checkout">
+                          <i class="bx bxs-trash-alt product-remove"></i>
+                      </a>   
+                  </div>
+              </div>
+              {% endfor %}
+        
+          
+          <div class="cart-total">
+              <h3 class="cart-total-title"> Total</h3>
+              <h3 class="cart-total-price"> </h3>
+              <a href="{% url 'ZOO_App:purchase'%}" class="btn btn-primary btn-checkout">Ver Carrinho</a>
+              <i class="bx bx-x"></i>
+          </div>
+          {% endif %}
+      </div>
+    </div>
 
     <div
       class="modal fade"
@@ -615,6 +683,32 @@
       src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"
       integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN"
       crossorigin="anonymous"
-    ></script>
+    >
+    </script>
+    <script>
+      $(document).ready(function(){
+        document.getElementsByClassName("cart-total-price")[0].textContent = sum();
+          $("#cart-icon").click(function(){
+              $(".cart").toggle("slide");
+          });  
+      });
+
+      function sum() {
+          const prices = document.getElementsByClassName("product-cart-price");
+          const quantities = document.getElementsByClassName("product-quantity");
+          let sum=0;
+          let aux="";
+          for (let index = 0; index < prices.length; index++) {
+              aux = prices[index].textContent.substring(0, prices[index].textContent.length-2);
+              sum += parseFloat(aux) * parseFloat(quantities[index].value); 
+          }
+          //document.getElementsByClassName("cart-total-price")[0].value = sum;
+          let string = sum.toString();
+          let aux2 = string.split(".")
+          string = aux2[0] + "." + aux2[1].substring(0,2) + " €";
+          return string;
+          //document.getElementsByClassName("cart-total-price")[0].textContent = string;
+      }
+  </script>
   </body>
 </html>
