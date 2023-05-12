@@ -98,6 +98,7 @@ class Comentario(models.Model):
     noticia = models.ForeignKey(Noticia, on_delete=models.DO_NOTHING)
     data = models.DateField(default= datetime.now)
     comentario = models.CharField(max_length=200)
+    
   
 
 class Especie(models.Model):
