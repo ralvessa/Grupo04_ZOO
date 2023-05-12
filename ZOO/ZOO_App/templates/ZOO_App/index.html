@@ -55,7 +55,7 @@
       }
     </style>
     {% load static %}
-    <link rel="stylesheet"  href="{%static 'css/style.css' %}" />
+    <link rel="stylesheet" href="{%static 'css/style.css' %}" />
   </head>
   <body>
     <nav class="navbar sticky-top navbar-expand-lg">
@@ -129,6 +129,11 @@
                 style="overflow: hidden"
               >
                 {% if request.user.is_authenticated %}
+                <a
+                  href="{% url 'ZOO_App:informacao_pessoal' %}"
+                  class="dropdown-item"
+                  >A minha conta</a
+                >
                 <a
                   href=""
                   class="dropdown-item"

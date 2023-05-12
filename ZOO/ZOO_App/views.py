@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
+from django.db import transaction
 
 from .models import *
 
@@ -64,48 +65,81 @@ def render_about(request):
 
 
 def render_noticias(request):
-    lista_noticias_total = Noticia.objects.all()
-    lista_noticias_user = UtilizadorNoticia_pk.objects.filter(utilizador=request.user.utilizador)
-    lista_tags = {}
-    lista_noticias = []
-    lista_noticias_recomendadas = []
-    for item in lista_noticias_user:
-        noticia = item.noticia
-        lista_noticias = lista_noticias + [noticia]
-        lista_tags_noticia = NoticiaTag_pk.objects.filter(noticia=noticia)
-        for item2 in lista_tags_noticia:
-            if lista_tags is not None:
-                if item2.tag.nome in lista_tags:
-                    lista_tags[item2.tag.nome] = lista_tags[item2.tag.nome] + 1
+    lista_noticias = Noticia.objects.all()
+    if request.user.is_authenticated:
+        lista_noticias_user = []
+        lista_tags_user = []
+        lista_tags={}
+        lista_noticias_recomendadas = []
+        for item in UtilizadorNoticia_pk.objects.filter(utilizador=request.user.utilizador):
+            lista_noticias_user = lista_noticias_user + [item.noticia]
+            for item2 in NoticiaTag_pk.objects.filter(noticia=item.noticia):
+                if lista_tags is not None:
+                    if item2.tag.nome not in lista_tags:
+                        lista_tags[item2.tag.nome] = 1
                 else:
                     lista_tags[item2.tag.nome] = 1
-            else:
-                lista_tags[item2.tag.nome] = 1
-    for item in NoticiaTag_pk.objects.all():
-        if item.noticia not in lista_noticias and item.tag not in lista_tags.keys():
-            lista_noticias_recomendadas = lista_noticias_recomendadas + [item.noticia]
-    lista_noticias_recomendadas = lista_noticias_recomendadas + list(lista_noticias_total)
-    lista_noticias_recomendadas = lista_noticias_recomendadas[0:4]
-    lista_noticias_total = list(lista_noticias_total)
+        for item in NoticiaTag_pk.objects.all():
+            if item.noticia not in lista_noticias and item.tag not in lista_tags.keys():
+                lista_noticias_recomendadas = lista_noticias_recomendadas + [item.noticia]
+        lista_noticias_recomendadas = lista_noticias_recomendadas + list(lista_noticias)
+        lista_noticias_recomendadas = lista_noticias_recomendadas[0:4]
+        lista_noticias = list(lista_noticias)
+        if "searchTerm" in request.POST:
+            searchTerm = request.POST["searchTerm"]
+            for item in lista_noticias.copy():
+                if item.descricao.find(searchTerm) == -1 and item.titulo.find(searchTerm) == -1:
+                    lista_noticias.remove(item)
+            for item in lista_noticias_recomendadas.copy():
+                if item.descricao.find(searchTerm) == -1 and item.titulo.find(searchTerm) == -1:
+                    lista_noticias_recomendadas.remove(item)
+        return render(request, 'ZOO_App/listagem_noticias.html',
+                      {'noticias': lista_noticias, 'recomendadas': lista_noticias_recomendadas[0:4]})
+    lista_noticias = list(lista_noticias)
     if "searchTerm" in request.POST:
         searchTerm = request.POST["searchTerm"]
-        for item in lista_noticias_total.copy():
+        for item in lista_noticias.copy():
             if item.descricao.find(searchTerm) == -1 and item.titulo.find(searchTerm) == -1:
-                lista_noticias_total.remove(item)
-        for item in lista_noticias_recomendadas.copy():
-            if item.descricao.find(searchTerm) == -1 and item.titulo.find(searchTerm) == -1:
-                lista_noticias_recomendadas.remove(item)
-    return render(request, 'ZOO_App/listagem_noticias.html', {'noticias': lista_noticias_total,'recomendadas': lista_noticias_recomendadas[0:4]})
+                lista_noticias.remove(item)
+    return render(request, 'ZOO_App/listagem_noticias.html',
+                  {'noticias': lista_noticias,})
+
+
+    # lista_noticias_total = Noticia.objects.all()
+    # lista_noticias_user = UtilizadorNoticia_pk.objects.filter(utilizador=request.user.utilizador)
+    # lista_tags = {}
+    # lista_noticias = []
+    # lista_noticias_recomendadas = []
+    # for item in lista_noticias_user:
+    #     noticia = item.noticia
+    #     lista_noticias = lista_noticias + [noticia]
+    #     lista_tags_noticia = NoticiaTag_pk.objects.filter(noticia=noticia)
+    #     for item2 in lista_tags_noticia:
+    #         if lista_tags is not None:
+    #             if item2.tag.nome in lista_tags:
+    #                 lista_tags[item2.tag.nome] = lista_tags[item2.tag.nome] + 1
+    #             else:
+    #                 lista_tags[item2.tag.nome] = 1
+    #         else:
+    #             lista_tags[item2.tag.nome] = 1
+    # for item in NoticiaTag_pk.objects.all():
+    #     if item.noticia not in lista_noticias and item.tag not in lista_tags.keys():
+    #         lista_noticias_recomendadas = lista_noticias_recomendadas + [item.noticia]
+    # lista_noticias_recomendadas = lista_noticias_recomendadas + list(lista_noticias_total)
+    # lista_noticias_recomendadas = lista_noticias_recomendadas[0:4]
+
+
+
 
 
 def render_detalhe_noticia(request, noticia_id):
     noticia = get_object_or_404(Noticia, pk=noticia_id)
     if request.user.is_authenticated:
-        return
-        #TODO implementar logica de visualizaçao da noticia
+        visualizacao = UtilizadorNoticia_pk(utilizador=request.user.utilizador, noticia=noticia)
+        visualizacao.save()
+        return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia})
     return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia})
-def render_detalhe_noticia(request):
-    return
+
 def render_precario(request):
     bilhetes = Bilhete.objects.all()
     return render(request, 'ZOO_App/precario.html')
@@ -165,4 +199,42 @@ def getProductsInCart(request):
 
     #return render(request, 'ZOO_App/shop_archive.html', {'pcc_pk':pcc_pk, 'pcc': list, 'product_list': product_list})
     return render(request, 'ZOO_App/shop_archive.html', {'all':dict, 'product_list': product_list})
+
+@login_required(login_url='/login')
+def render_informacao_pessoal(request):
+    user = User.objects.get(id=request.user.id)
+    utilizador = Utilizador.objects.get(id=request.user.utilizador.id)
+    if request.method == 'POST':
+        address = request.POST['address']
+        email = request.POST['email']
+        if request.user.email != email:
+            user.email = email
+            user.save()
+        if request.user.utilizador.morada != address:
+            utilizador.morada = address
+            utilizador.save()
+        return render(request, 'ZOO_App/informacao_pessoal.html', {'user': user, 'utilizador': utilizador})
+    else:
+        return render(request, 'ZOO_App/informacao_pessoal.html', {'user': user, 'utilizador': utilizador})
+
+
+@login_required(login_url='/login')
+def render_alterar_password(request):
+    if request.method == 'POST':
+        old_password = request.POST['old_password']
+        new_password = request.POST['new_password']
+        new_password2 = request.POST['new_password2']
+        user = authenticate(username=request.user.username, password=old_password)
+        if user is None:
+            return render(request, 'ZOO_App/alterar_password.html', {'incorrect_password': 'Password incorreta, tente novamente'})
+        else:
+            if new_password != new_password2:
+                return render(request, 'ZOO_App/alterar_password.html', {'incorrect_password': 'Passwords não são iguais'})
+            else:
+                user.set_password(new_password)
+                user.save()
+                login(request, user)
+                return render(request, 'ZOO_App/informacao_pessoal.html', {'efective_password_change': 'Alterou a sua password com sucesso'})
+    else:
+        return render(request, 'ZOO_App/alterar_password.html')
 

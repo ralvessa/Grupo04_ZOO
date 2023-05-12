@@ -1,27 +1,18 @@
 {%extends "./index.html"%} {% block conteudo %} {% load static %}
 <div class="container-fluid justify-content-center">
-  <div class="row justify-content-center">
+  <p class="text-center fs-3 fw-bolder mt-2">{{noticia.titulo}}</p>
+  <div class="row justify-content-center mt-3">
     <div class="col-6">
-      <p>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, nam.
-        Eveniet cupiditate debitis enim perferendis eum nihil veniam, quasi eius
-        aperiam. Accusamus, praesentium. Deserunt sit fugit aliquid atque
-        impedit labore molestias? Minus, consequatur veritatis vel numquam
-        reiciendis impedit eius accusantium deleniti maiores molestias
-        obcaecati. Qui quaerat impedit earum dolor temporibus.
-      </p>
+      <img
+        src="{%static noticia.imagem.url %}"
+        alt="imagem da noticia '{{noticia.titulo}}'"
+        class="d-block mx-auto"
+      />
     </div>
   </div>
-  <div class="row justify-content-center">
+  <div class="row justify-content-center mt-3">
     <div class="col-6">
-      <p>
-        Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quisquam, nam.
-        Eveniet cupiditate debitis enim perferendis eum nihil veniam, quasi eius
-        aperiam. Accusamus, praesentium. Deserunt sit fugit aliquid atque
-        impedit labore molestias? Minus, consequatur veritatis vel numquam
-        reiciendis impedit eius accusantium deleniti maiores molestias
-        obcaecati. Qui quaerat impedit earum dolor temporibus.
-      </p>
+      <p>{{noticia.descricao}}</p>
     </div>
   </div>
 </div>
