@@ -137,6 +137,9 @@ def render_noticias(request):
 
 def render_detalhe_noticia(request, noticia_id):
     noticia = get_object_or_404(Noticia, pk=noticia_id)
+    utilnotilist = UtilizadorNoticia_pk.objects.filter(noticia=noticia)
+    for item in utilnotilist:
+       print()
     if request.user.is_authenticated:
         visualizacao = UtilizadorNoticia_pk(utilizador=request.user.utilizador, noticia=noticia)
         visualizacao.save()
@@ -304,7 +307,7 @@ def addComentario(request, noticia_id):
     #comentario=""
     #list = auxGetProductsInCart(utilizador) 
     noticia_utilizador = UtilizadorNoticia_pk.objects.get(utilizador=utilizador, noticia=noticia)
-    utilizador_comentario = UtilizadorComentario(UtilizadorNoticia_pk=noticia_utilizador, data=current_datetime, comentario=comentario)
+    utilizador_comentario = UtilizadorComentario(utilizador_noticia=noticia_utilizador, data=current_datetime, comentario=comentario)
     utilizador_comentario.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))   
     

@@ -67,8 +67,6 @@
    
 {%endfor%}
 
-<button class="add-comment" onclick="addComment()">Adicionar Comentário</button>
-
 <script>
     $(function () {
             $(".row-cols-1").accordion({
@@ -78,29 +76,7 @@
             $( ".row-cols-1" ).accordion( "option", "heightStyle", "fill" );
         });
 
-        function addComment(){
-            var form = document.createElement("form");
-            var element1 = document.createElement("input"); 
-            var element2 = document.createElement("input");  
-
-            form.method = "POST";
-            form.action = "{% url 'ZOO_App:addComentario' {{noticia.id}} %}";  
-            
-            element1.setAttribute("type", "text");
-            element2.setAttribute("type", "submit");
-
-            element1.value="hey";
-            element1.name="comment";
-            form.appendChild(element1);  
-
-            //element2.value=pw;
-            element2.name="pw";
-            element2.class="btn btn-primary";
-            form.appendChild(element2);
-
-            document.body.appendChild(form);
-
-        }
+        
 </script>
 
 
