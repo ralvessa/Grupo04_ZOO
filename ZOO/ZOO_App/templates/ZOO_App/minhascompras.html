@@ -23,7 +23,7 @@
 
 
 
-<h1 class="product-title">Minhas Faturas</h1>
+<h1 class="product-title" style=" text-align: center;">Minhas Compras</h1>
 <br>
 <div class="row mb-3">
     <div class="col-7">
@@ -74,12 +74,13 @@
 
     </div>
     
-        <div class="col-4" style="background-color: aqua;">
+        <div class="col-4" style="background-color: whitesmoke;">
             {% for item in bilhetes %}
-            <p>{{item.bilhete.preco}}</p>
+            <p>{{item.data_compra|date:'Y-m-d'}} - {{item.bilhete.intervalo_idade}} </p>
+            <p>{{item.quantidade}} x {{item.bilhete.preco}} €</p>
 
             {% endfor %}
-            <p>heyy</p>
+
         </div>
 
 </div>
