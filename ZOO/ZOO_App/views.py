@@ -74,7 +74,7 @@ def render_noticias(request):
         lista_tags={}
         lista_noticias_recomendadas = []
         listCart = getProductsInCart(request)
-    for item in UtilizadorNoticia_pk.objects.filter(utilizador=request.user.utilizador):
+        for item in UtilizadorNoticia_pk.objects.filter(utilizador=request.user.utilizador):
             lista_noticias_user = lista_noticias_user + [item.noticia]
             for item2 in NoticiaTag_pk.objects.filter(noticia=item.noticia):
                 if lista_tags is not None:
