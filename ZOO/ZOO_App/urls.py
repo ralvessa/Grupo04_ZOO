@@ -27,4 +27,5 @@ urlpatterns = [
     path('minhascompras',views.render_minhascompras, name='minhascompras'),
     path('addComentario/<int:noticia_id>',views.addComentario, name='addComentario'),
     path('bilheteCompra/<int:crianca>/<int:adulto>/<int:senior>', views.bilheteCompra, name='bilheteCompra'),
+    path('noticia/<int:noticia_id>/adicionar_like', views.render_adicionar_like, name='adicionar_like'),
 ]
