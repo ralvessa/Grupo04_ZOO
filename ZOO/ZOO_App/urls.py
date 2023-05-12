@@ -16,4 +16,5 @@ urlpatterns = [
     path('addProductToCart',views.addProductToCart, name='addProductToCart'),
     path('getProductsInCart',views.getProductsInCart, name='getProductsInCart'),
     path('precario',views.render_precario, name='precario'),
+    path('bilheteCompra/<int:crianca>/<int:adulto>/<int:senior>', views.bilheteCompra, name='bilheteCompra'),
 ]

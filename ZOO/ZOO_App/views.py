@@ -5,6 +5,7 @@ from django.http import HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
 from django.urls import reverse
 from django.views import generic
+from django.utils import timezone
 
 from .models import *
 
@@ -100,14 +101,14 @@ def render_noticias(request):
 
 def render_detalhe_noticia(request):
     return
+
 def render_precario(request):
     bilhetes = Bilhete.objects.all()
-    return render(request, 'ZOO_App/precario.html')
+    return render(request, 'ZOO_App/precario.html', {'bilhete_list': bilhetes})
 
 def render_shop(request):
     product_list = Produto.objects.all()
-    context = {'product_list': product_list,
-    }
+    context = {'product_list': product_list,}
     return render(request, 'ZOO_App/shop_archive.html', context)
 
 def render_produto(request, produto_id):
@@ -160,3 +161,18 @@ def getProductsInCart(request):
     #return render(request, 'ZOO_App/shop_archive.html', {'pcc_pk':pcc_pk, 'pcc': list, 'product_list': product_list})
     return render(request, 'ZOO_App/shop_archive.html', {'all':dict, 'product_list': product_list})
 
+
+def bilheteCompra(request,crianca,adulto,senior):
+    if(crianca != 0):
+        bilheteCrianca = BilheteUtilizador(
+            bilhete= Bilhete.objects.get(pk=2), utilizador=User.objects.get(pk=request.user.id), data_bilhete=timezone.now(),quantidade= crianca)
+        bilheteCrianca.save()
+    if(adulto != 0):
+        bilheteAdulto = BilheteUtilizador(
+            bilhete=Bilhete.objects.get(pk=3), utilizador=User.objects.get(pk=request.user.id), data_bilhete=timezone.now(), quantidade=adulto)
+        bilheteAdulto.save()
+    if(senior != 0):
+        bilheteSenior = BilheteUtilizador(
+            bilhete=Bilhete.objects.get(pk=4), utilizador=User.objects.get(pk=request.user.id), data_bilhete=timezone.now(), quantidade=senior)
+        bilheteSenior.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
