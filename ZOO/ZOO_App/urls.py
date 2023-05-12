@@ -28,4 +28,5 @@ urlpatterns = [
     path('addComentario/<int:noticia_id>',views.addComentario, name='addComentario'),
     path('bilheteCompra/<int:crianca>/<int:adulto>/<int:senior>', views.bilheteCompra, name='bilheteCompra'),
     path('noticia/<int:noticia_id>/adicionar_like', views.render_adicionar_like, name='adicionar_like'),
+    path('noticia/<int:noticia_id>/remover_like', views.render_remover_like, name='remover_like'),
 ]
