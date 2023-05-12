@@ -1,16 +1,7 @@
 {%extends "./index.html"%} {% block conteudo %} {% load static %}
 <style>
-  .like:focus {
-    animation-name: my-animation;
-    animation-duration: 1s;
-  }
-  @keyframes my-animation {
-    from {
-      color: #ffffff;
-    }
-    to {
-      color: #ff0000;
-    }
+  .like {
+    border-width: 0px;
   }
 </style>
 
@@ -25,7 +16,17 @@
       />
     </div>
     <div class="col-1">
-      <i class="bx bxs-heart" style="color: #ff0004"></i>
+      <a
+        href="{% url 'ZOO_App:adicionar_like' noticia.id %}"
+        class="like"
+        style="color: #000000; text-decoration: none"
+      >
+        {% if request.user.is_authenticated and like %}
+        <i class="bx bxs-heart" style="color: #ff0000"></i>
+        {% else %}
+        <i class="bx bxs-heart" style="color: #000000"></i>
+        {% endif %} {{like_amount}}
+      </a>
     </div>
   </div>
   <div class="row justify-content-center mt-3">
