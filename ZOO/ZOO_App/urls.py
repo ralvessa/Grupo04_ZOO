@@ -16,4 +16,6 @@ urlpatterns = [
     path('addProductToCart',views.addProductToCart, name='addProductToCart'),
     path('getProductsInCart',views.getProductsInCart, name='getProductsInCart'),
     path('precario',views.render_precario, name='precario'),
+    path('informacao_pessoal',views.render_informacao_pessoal, name='informacao_pessoal'),
+path('alterar_password',views.render_alterar_password, name='alterar_password'),
 ]
