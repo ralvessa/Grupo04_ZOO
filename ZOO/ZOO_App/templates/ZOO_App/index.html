@@ -691,8 +691,15 @@
         document.getElementsByClassName("cart-total-price")[0].textContent = sum();
           $("#cart-icon").click(function(){
               $(".cart").toggle("slide");
-          });  
+          }); 
       });
+      
+      /*$(document).ready(function(){
+            $("#cart-icon").click(function(){
+                if( $('.cart').is(':animated') ) { return false; }
+                $(".cart").animate({width:'toggle'}); 
+            }); 
+        });*/
 
       function sum() {
           const prices = document.getElementsByClassName("product-cart-price");
