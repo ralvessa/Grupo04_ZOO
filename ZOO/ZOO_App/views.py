@@ -386,15 +386,15 @@ def render_alterar_password(request):
 def bilheteCompra(request,crianca,adulto,senior):
     if(crianca != 0):
         bilheteCrianca = BilheteUtilizador(
-            bilhete= Bilhete.objects.get(pk=2), utilizador=User.objects.get(pk=request.user.id), data_bilhete=timezone.now(),quantidade= crianca)
+            bilhete= Bilhete.objects.get(pk=2), utilizador=User.objects.get(pk=request.user.id),quantidade= crianca)
         bilheteCrianca.save()
     if(adulto != 0):
         bilheteAdulto = BilheteUtilizador(
-            bilhete=Bilhete.objects.get(pk=3), utilizador=User.objects.get(pk=request.user.id), data_bilhete=timezone.now(), quantidade=adulto)
+            bilhete=Bilhete.objects.get(pk=3), utilizador=User.objects.get(pk=request.user.id), quantidade=adulto)
         bilheteAdulto.save()
     if(senior != 0):
         bilheteSenior = BilheteUtilizador(
-            bilhete=Bilhete.objects.get(pk=4), utilizador=User.objects.get(pk=request.user.id), data_bilhete=timezone.now(), quantidade=senior)
+            bilhete=Bilhete.objects.get(pk=4), utilizador=User.objects.get(pk=request.user.id), quantidade=senior)
         bilheteSenior.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
