@@ -407,4 +407,17 @@ def render_adicionar_like(request, noticia_id):
     utilizadornoticia = UtilizadorNoticia_pk.objects.get(utilizador=utilizador, noticia=noticia)
     utilizadornoticia.like = True
     utilizadornoticia.save()
-    return HttpResponseRedirect(reverse('ZOO_App:detalhe_noticia', args=(noticia_id,)), {'noticia': noticia, "comments": comments, "like": utilizadornoticia.like})
+    like_amount = len(UtilizadorNoticia_pk.objects.filter(noticia=noticia, like=True))
+    return HttpResponseRedirect(reverse('ZOO_App:detalhe_noticia', args=(noticia_id,)), {'noticia': noticia, "comments": comments, "like": utilizadornoticia.like, "like_amount": like_amount})
+
+
+@login_required(login_url='/login')
+def render_remover_like(request, noticia_id):
+    utilizador = Utilizador.objects.get(user=request.user)
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
+    comments = Comentario.objects.filter(noticia=noticia)
+    utilizadornoticia = UtilizadorNoticia_pk.objects.get(utilizador=utilizador, noticia=noticia)
+    utilizadornoticia.like = False
+    utilizadornoticia.save()
+    like_amount = len(UtilizadorNoticia_pk.objects.filter(noticia=noticia, like=True))
+    return HttpResponseRedirect(reverse('ZOO_App:detalhe_noticia', args=(noticia_id,)), {'noticia': noticia, "comments": comments, "like": utilizadornoticia.like, "like_amount": like_amount})
