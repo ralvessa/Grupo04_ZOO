@@ -244,7 +244,9 @@ def render_purchase(request):
     #dict = auxGetProductsInCart(utilizador)
     if request.user.is_authenticated:
         list = getProductsInCart(request)
-        return render(request, 'ZOO_App/purchase.html', {'all':list})
+        if len(list)>0:
+            return render(request, 'ZOO_App/purchase.html', {'all':list})
+        return render_shop(request)
 
 
 def finishPurchase(request):
@@ -259,7 +261,7 @@ def finishPurchase(request):
             faturaprodutopk = FaturaProduto_pk(fatura= fatura, produto=item.produto, quantidade=item.quantidade)
             faturaprodutopk.save()
         emptyCart(request)    
-        return render(request, 'ZOO_App/about.html', {'all':list}) 
+        return render_shop(request)
 
     
 
@@ -277,7 +279,7 @@ def emptyCart(request):
         list = auxGetProductsInCart(utilizador) 
         for item in list:
             item.delete()
-        return render(request, 'ZOO_App/shop_archive.html', {'product_list': product_list}) 
+        return render_shop(request)
     
 def deleteProductFromCart(request, produto_id):
     if request.user.is_authenticated:
@@ -288,6 +290,7 @@ def deleteProductFromCart(request, produto_id):
             if item.produto == produto:
                 item.delete()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
+
         #return getProductsInCart(request)   
 def takeProductFromCart(request, produto_id):
     if request.user.is_authenticated:
@@ -296,8 +299,11 @@ def takeProductFromCart(request, produto_id):
         list = auxGetProductsInCart(utilizador) 
         for item in list:
             if item.produto == produto:
-                item.quantidade -=1
-                item.save()
+                if item.quantidade > 1:
+                    item.quantidade -=1
+                    item.save()
+                elif item.quantidade==1:
+                    return deleteProductFromCart(request, produto_id)               
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
@@ -317,11 +323,11 @@ def render_minhascompras(request):
         list = getProductsInCart(request)
         utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
         faturas = Fatura.objects.filter(utilizador=utilizador)
+        bilhetes = BilheteUtilizador.objects.filter(utilizador=request.user.id)
         dict={}
-        print(faturas[0].data)
         for item in faturas:
             dict[item]=FaturaProduto_pk.objects.filter(fatura=item)  
-        return render(request, 'ZOO_App/minhascompras.html', {'all' :list, 'fatura':dict})
+        return render(request, 'ZOO_App/minhascompras.html', {'all' :list, 'fatura':dict, 'bilhetes':bilhetes})
 
 
 def addComentario(request, noticia_id):

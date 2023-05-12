@@ -19,17 +19,24 @@
   </div>
 </div>
 
-{% for item in comments %}
-<input type="text" value="{{item.comentario}}" name="comment">
+<div class="all-comments" style="margin-left: 10%; margin-right: 10%;">
+  {% for item in comments %}
+  <p class="user-name" style="float: left; margin-right: 15px;"> {{item.utilizador.user}} </p>
+  <input type="text" value="{{item.comentario}}" name="comment" readonly style="width:70%; float: left;">
+  <br><br>
 
-{% endfor%}
+  {% endfor%}
 
 
-<form action="{% url 'ZOO_App:addComentario' noticia.id %}" method="POST">
-  {% csrf_token %}
-  <input type="text" value="hey" name="comment">
-  <input type="submit" name="submit" class="btn btn-primary">
-</form>
+  <form action="{% url 'ZOO_App:addComentario' noticia.id %}" method="POST">
+    {% csrf_token %}
+    <input type="text" placeholder="Escreva o seu comentário" name="comment" style="width:70%; float: right; margin-top: 10px;">
+    <br><br>
+    <input type="submit" name="submit" value="Comentar" class="btn btn-primary" style="float: right; margin-bottom: 20px;">
+  </form>
+
+</div>
+
 
 
 {% endblock %}
