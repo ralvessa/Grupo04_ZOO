@@ -23,8 +23,8 @@ urlpatterns = [
     path('<int:produto_id>/sumProductToCart',views.sumProductToCart, name='sumProductToCart'),
     path('precario',views.render_precario, name='precario'),
     path('informacao_pessoal',views.render_informacao_pessoal, name='informacao_pessoal'),
-path('alterar_password',views.render_alterar_password, name='alterar_password'),
+    path('alterar_password',views.render_alterar_password, name='alterar_password'),
     path('minhascompras',views.render_minhascompras, name='minhascompras'),
-     path('addComentario/<int:noticia_id>',views.addComentario, name='addComentario'),
+    path('addComentario/<int:noticia_id>',views.addComentario, name='addComentario'),
     path('bilheteCompra/<int:crianca>/<int:adulto>/<int:senior>', views.bilheteCompra, name='bilheteCompra'),
 ]

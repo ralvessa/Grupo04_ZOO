@@ -146,7 +146,7 @@ def render_detalhe_noticia(request, noticia_id):
 def render_precario(request):
     bilhetes = Bilhete.objects.all()
     list = getProductsInCart(request)
-    return render(request, 'ZOO_App/precario.html', {'all' :list})
+    return render(request, 'ZOO_App/precario.html', {'all' :list, 'bilhete_list': bilhetes})
 
 def render_shop(request):
     product_list = Produto.objects.all()
