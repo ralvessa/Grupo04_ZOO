@@ -18,15 +18,17 @@
         <section class="shop container"> 
             
             <h2 class="section-title">Shop Products</h2>
+
+            <i class="filtericon bx bxs-cat"></i>
             
             <div class="shop-content-w-filter">
-                <aside class="filters">
-                    <h3 style="justify-content: center;">Filters</h3>
+                <aside class="filters" style="background-color: azure;">
+                    <h3>Filters</h3>
                     {% for produto in product_types %}
                     <input type="checkbox" id="type1" name="type1" value="{{produto}}" checked onchange="checkFilters(this)">
-                    <label for="type1"> {{produto}}</label><br>
+                    <label for="type1" style="font-size: large; margin-top: 10px;"> {{produto}}</label><br>
                     {% endfor %}
-
+                    
                 </aside>
                 <div class="shop-content">
                     {% for produto in product_list %}
@@ -59,12 +61,15 @@
                 if(products[index].name == checkboxElem.value){
                     products[index].style.display=display
                     //alert(products[index] + " " + products[index].style.display)
-                }
-                
+                } 
             }
-
-            //url
         }
+
+        $(document).ready(function(){
+            $(".filtericon").click(function(){
+                $(".filters").animate({width:'toggle'}); 
+            }); 
+        });
                 
     </script>
 

@@ -22,4 +22,7 @@ urlpatterns = [
     path('<int:produto_id>/takeProductFromCart',views.takeProductFromCart, name='takeProductFromCart'),
     path('<int:produto_id>/sumProductToCart',views.sumProductToCart, name='sumProductToCart'),
     path('precario',views.render_precario, name='precario'),
+    path('minhascompras',views.render_minhascompras, name='minhascompras'),
+     path('addComentario/<int:noticia_id>',views.addComentario, name='addComentario'),
+
 ]

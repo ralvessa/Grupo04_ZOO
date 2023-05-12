@@ -71,6 +71,7 @@ def render_noticias(request):
     lista_tags = {}
     lista_noticias = []
     lista_noticias_recomendadas = []
+    listCart = getProductsInCart(request)
     for item in lista_noticias_user:
         noticia = item.noticia
         lista_noticias = lista_noticias + [noticia]
@@ -97,14 +98,15 @@ def render_noticias(request):
         for item in lista_noticias_recomendadas.copy():
             if item.descricao.find(searchTerm) == -1 and item.titulo.find(searchTerm) == -1:
                 lista_noticias_recomendadas.remove(item)
-    return render(request, 'ZOO_App/listagem_noticias.html', {'noticias': lista_noticias_total,'recomendadas': lista_noticias_recomendadas[0:4]})
+    return render(request, 'ZOO_App/listagem_noticias.html', {'noticias': lista_noticias_total,'recomendadas': lista_noticias_recomendadas[0:4], 'all' :listCart})
 
 
 def render_detalhe_noticia(request):
     return
 def render_precario(request):
     bilhetes = Bilhete.objects.all()
-    return render(request, 'ZOO_App/precario.html')
+    list = getProductsInCart(request)
+    return render(request, 'ZOO_App/precario.html', {'all' :list})
 
 def render_shop(request):
     product_list = Produto.objects.all()
@@ -120,7 +122,8 @@ def render_shop(request):
 
 def render_produto(request, produto_id):
     produto = get_object_or_404(Produto, pk=produto_id)
-    return render(request, 'ZOO_App/product_info.html', {'produto': produto})
+    list = getProductsInCart(request)
+    return render(request, 'ZOO_App/product_info.html', {'produto': produto,'all' :list})
 
 #@login_required(login_url='/login')
 def addProductToCart(request):
@@ -186,7 +189,7 @@ def finishPurchase(request):
     list = auxGetProductsInCart(utilizador)
     current_datetime = timezone.now()  
     precototal = getTotalPrice(list)
-    fatura = Fatura(data=current_datetime, preco_total=int(precototal), utilizador=utilizador)
+    fatura = Fatura(data=current_datetime, preco_total=float(precototal), utilizador=utilizador)
     fatura.save()
     for item in list:
         faturaprodutopk = FaturaProduto_pk(fatura= fatura, produto=item.produto, quantidade=item.quantidade)
@@ -239,4 +242,29 @@ def sumProductToCart(request, produto_id):
             item.save()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))     
             
+def render_minhascompras(request):
+    list = getProductsInCart(request)
+    utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
+    faturas = Fatura.objects.filter(utilizador=utilizador)
+    dict={}
+    print(faturas[0].data)
+    for item in faturas:
+        dict[item]=FaturaProduto_pk.objects.filter(fatura=item)  
+    return render(request, 'ZOO_App/minhascompras.html', {'all' :list, 'fatura':dict})
+
+def addComentario(request, noticia_id):
+    if request.method == 'POST':
+        try:
+            comentario = request.POST.get("comment")
+        except KeyError:
+            return render(request, 'ZOO_App/about.html')
+    utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
+    noticia = get_object_or_404(Noticia, pk=noticia_id)
+    current_datetime = timezone.now() 
+    #comentario=""
+    #list = auxGetProductsInCart(utilizador) 
+    noticia_utilizador = UtilizadorNoticia_pk.objects.get(utilizador=utilizador, noticia=noticia)
+    utilizador_comentario = UtilizadorComentario(UtilizadorNoticia_pk=noticia_utilizador, data=current_datetime, comentario=comentario)
+    utilizador_comentario.save()
+    return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))   
     

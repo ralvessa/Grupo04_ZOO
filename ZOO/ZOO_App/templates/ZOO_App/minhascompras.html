@@ -1,0 +1,107 @@
+{%extends "./index.html"%} 
+
+{%block titulo%} Product {%endblock%}
+{% load static %}
+{%block head%}
+<link href="https://code.jquery.com/ui/jquery-ui-git.css" rel="stylesheet" type="text/css" />
+<script src="https://code.jquery.com/jquery-git.js"></script>
+<script src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
+
+{%endblock%}
+
+{%block conteudo%}
+<style>
+
+    .row{
+        margin-right: 10%;
+        margin-left: 10%;
+    }
+    .row-secondary-ind{
+        margin-top: 20px;
+    }
+</style>
+
+
+
+<h1 class="product-title">Minhas Compras</h1>
+<br>
+{% for key, value in fatura.items %}
+
+    <div class="row row-cols-1">
+        <div class="row row-principal">
+            <div class="col-md-8">
+                <p>Data e Hora de Compra: {{key.data}}</p>
+                <p>Preço Total: {{key.preco_total}}</p>
+    
+            </div>
+            <div class="col-md-4">
+                {% for item in value %}
+                    <img src="{% static item.produto.imagem.url %}" style="width: 50%;" alt="">
+                {%endfor%}
+            </div>
+        </div>
+        
+        <div class=" row-secondary">
+            {% for item in value %}    
+                <div class="compras-box row row-secondary-ind" >
+                    <div class="col-md-4">
+                        <img src="{% static item.produto.imagem.url %}" alt="" style=" width: 50%; height: auto;" class="compras-cart-image">
+    
+                    </div>
+                    <div class="col-md-8">
+                        <p class="product-compras-price">{{item.produto.preco}} €</p>
+                        <p class="product-compras-quantity">Quantidade: {{item.quantidade}}</p>
+                    </div>
+                            
+                </div>
+                {% endfor %}
+                        
+            <div class="compras-total">
+                <h3 class="compras-total-title"> Total</h3>
+                <h3 class="compras-total-price"> {{key.preco_total}}</h3>
+            </div>
+        
+        </div>
+        
+    </div>
+   
+{%endfor%}
+
+<button class="add-comment" onclick="addComment()">Adicionar Comentário</button>
+
+<script>
+    $(function () {
+            $(".row-cols-1").accordion({
+                heightStyle: "content"
+            });
+            var heightStyle = $( ".row-cols-1" ).accordion( "option", "heightStyle" );
+            $( ".row-cols-1" ).accordion( "option", "heightStyle", "fill" );
+        });
+
+        function addComment(){
+            var form = document.createElement("form");
+            var element1 = document.createElement("input"); 
+            var element2 = document.createElement("input");  
+
+            form.method = "POST";
+            form.action = "{% url 'ZOO_App:addComentario' {{noticia.id}} %}";  
+            
+            element1.setAttribute("type", "text");
+            element2.setAttribute("type", "submit");
+
+            element1.value="hey";
+            element1.name="comment";
+            form.appendChild(element1);  
+
+            //element2.value=pw;
+            element2.name="pw";
+            element2.class="btn btn-primary";
+            form.appendChild(element2);
+
+            document.body.appendChild(form);
+
+        }
+</script>
+
+
+{%endblock%}

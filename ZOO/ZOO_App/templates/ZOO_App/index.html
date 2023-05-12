@@ -135,11 +135,7 @@
             </li>
           </ul>
           <ul class="nav navbar-nav navbar-right">
-                <a href="{% url 'ZOO_App:getProductsInCart'%}" class="logo nav-link"> 
-                    Shopping 
-        
-                </a>
-                <i class="bx bx-cart"  id="cart-icon"></i>
+                <i class="bx bx-cart logo nav-link" style="font-size: 200%; margin-right: 10px;" id="cart-icon"></i>
             
             <li class="dropdown">
               <a
@@ -161,6 +157,11 @@
                 style="overflow: hidden"
               >
                 {% if request.user.is_authenticated %}
+                <a
+                  href="{% url 'ZOO_App:minhascompras'%}"
+                  class="dropdown-item"
+                  >Minhas Compras</a
+                >
                 <a
                   href=""
                   class="dropdown-item"
