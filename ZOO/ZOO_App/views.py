@@ -145,7 +145,10 @@ def render_detalhe_noticia(request, noticia_id):
     noticia = get_object_or_404(Noticia, pk=noticia_id)
     comments = Comentario.objects.filter(noticia=noticia)
     if request.user.is_authenticated:
-        visualizacao = UtilizadorNoticia_pk(utilizador=request.user.utilizador, noticia=noticia)
+        try:
+            visualizacao = UtilizadorNoticia_pk.objects.get(utilizador=request.user.utilizador, noticia=noticia)
+        except UtilizadorNoticia_pk.DoesNotExist:
+            visualizacao = UtilizadorNoticia_pk(utilizador=request.user.utilizador, noticia=noticia)
         visualizacao.save()
         list = getProductsInCart(request)
         return render(request, 'ZOO_App/detalhe_noticia.html', {'noticia': noticia, "comments": comments, 'all' :list})
