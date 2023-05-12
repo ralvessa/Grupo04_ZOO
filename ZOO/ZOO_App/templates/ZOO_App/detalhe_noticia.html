@@ -1,5 +1,18 @@
 {%extends "./index.html"%} {% block conteudo %} {% load static %}
-
+<style>
+  .like:focus {
+    animation-name: my-animation;
+    animation-duration: 1s;
+  }
+  @keyframes my-animation {
+    from {
+      color: #ffffff;
+    }
+    to {
+      color: #ff0000;
+    }
+  }
+</style>
 
 <div class="container-fluid justify-content-center">
   <p class="text-center fs-3 fw-bolder mt-2">{{noticia.titulo}}</p>
@@ -11,6 +24,9 @@
         class="d-block mx-auto"
       />
     </div>
+    <div class="col-1">
+      <i class="bx bxs-heart" style="color: #ff0004"></i>
+    </div>
   </div>
   <div class="row justify-content-center mt-3">
     <div class="col-6">
@@ -19,14 +35,10 @@
   </div>
 </div>
 
-
-
-
 <form action="{% url 'ZOO_App:addComentario' noticia.id %}" method="POST">
   {% csrf_token %}
-  <input type="text" value="hey" name="comment">
-  <input type="submit" name="submit" class="btn btn-primary">
+  <input type="text" value="hey" name="comment" />
+  <input type="submit" name="submit" class="btn btn-primary" />
 </form>
-
 
 {% endblock %}
