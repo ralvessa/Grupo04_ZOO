@@ -1,5 +1,5 @@
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.decorators import login_required
+from django.contrib.auth.decorators import login_required, user_passes_test
 from django.contrib.auth.models import User
 from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, render
@@ -454,3 +454,26 @@ def render_deleteProduct(request, produto_id):
             produto.delete()
             return render_shop(request)
         
+
+def admin_check(user):
+    return user.is_superuser
+
+
+@user_passes_test(admin_check, login_url='/ZOO_App/index')
+def render_criar_noticia(request):
+    if request.method == 'POST' and request.FILES['myfile']:
+        myfile = request.FILES['myfile']
+        descricao = request.POST['descricao']
+        titulo = request.POST['titulo']
+        noticia = Noticia(descricao=descricao, titulo=titulo, imagem=myfile)
+        noticia.save()
+        return render_detalhe_noticia(request, noticia.id)
+    else:
+        return render(request, 'ZOO_App/criar_noticia.html')
+
+
+@user_passes_test(admin_check, login_url='/ZOO_App/index')
+def render_remover_noticia(request, noticia_id):
+    noticia = Noticia.objects.get(pk=noticia_id)
+    noticia.delete()
+    return render_noticias(request)

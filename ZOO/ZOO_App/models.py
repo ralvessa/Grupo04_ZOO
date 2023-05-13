@@ -19,6 +19,7 @@ class Produto(models.Model):
     categoria = models.CharField(max_length=50)
     imagem = models.FileField(upload_to="Products", null=True)
     descricao = models.CharField(max_length=100)
+    ativo = models.BooleanField(default=True)
 
 
 class Fatura(models.Model):
@@ -80,7 +81,7 @@ class NoticiaTag_pk(models.Model):
     class Meta:
         unique_together = (('noticia', 'tag'),)
 
-    noticia = models.ForeignKey(Noticia, on_delete=models.DO_NOTHING)
+    noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE)
     tag = models.ForeignKey(Tag, on_delete=models.DO_NOTHING)
 
 
@@ -89,13 +90,13 @@ class UtilizadorNoticia_pk(models.Model):
         unique_together = (('utilizador', 'noticia'),)
 
     utilizador = models.ForeignKey(Utilizador, on_delete=models.DO_NOTHING)
-    noticia = models.ForeignKey(Noticia, on_delete=models.DO_NOTHING)
+    noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE)
     data = models.DateField(default= datetime.now)
     like = models.BooleanField(default=False)
 
 class Comentario(models.Model):
     utilizador = models.ForeignKey(Utilizador, on_delete=models.DO_NOTHING)
-    noticia = models.ForeignKey(Noticia, on_delete=models.DO_NOTHING)
+    noticia = models.ForeignKey(Noticia, on_delete=models.CASCADE)
     data = models.DateField(default= datetime.now)
     comentario = models.CharField(max_length=200)
     

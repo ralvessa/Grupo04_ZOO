@@ -1,0 +1,33 @@
+{%extends "./index.html"%} {% block conteudo %} {% load static %}
+<form
+  action="{% url 'ZOO_App:criar_noticia' %}"
+  method="post"
+  class="row w-100 mt-3 justify-content-center"
+  enctype="multipart/form-data"
+>
+  {% csrf_token %}
+  <div class="col-2">
+    <label for="titulo" class="form-label ms-1">Título: </label>
+    <input class="form-control" type="text" name="titulo" required />
+    <br />
+    <label for="descricao" class="form-label ms-1">Descrição: </label>
+    <input class="form-control" type="text" name="descricao" required />
+    <br />
+    <label for="myfile" class="form-label ms-1">Imagem: </label>
+    <div class="input-group mb-3">
+      <input
+        type="file"
+        name="myfile"
+        class="form-control"
+        id="inputGroupFile02"
+      />
+    </div>
+    <div class="row mt-3">
+      <div class="col-auto g-0 ms-1">
+        <input type="submit" value="Criar Notícia" class="btn btn-secondary" />
+      </div>
+    </div>
+  </div>
+</form>
+
+{% endblock %}

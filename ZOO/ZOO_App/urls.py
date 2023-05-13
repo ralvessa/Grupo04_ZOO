@@ -33,6 +33,8 @@ urlpatterns = [
     path('noticia/<int:noticia_id>/remover_like', views.render_remover_like, name='remover_like'),
     path('createProduct',views.render_createProduct, name='createProduct'),
     path('deleteProduct/<int:produto_id>',views.render_deleteProduct, name='deleteProduct'),
+    path('noticias/criarNoticia',views.render_criar_noticia, name='criar_noticia'),
+    path('noticia/<int:noticia_id>/remover_noticia',views.render_remover_noticia, name='remover_noticia'),
 ]
 
 if settings.DEBUG:
