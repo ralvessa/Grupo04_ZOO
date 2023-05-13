@@ -14,6 +14,12 @@ from .models import *
 
 # Create your views here.
 
+def admin_check(user):
+    return user.is_superuser
+
+def not_logged_check(user):
+    return not user.is_authenticated
+
 
 def render_index(request):
     if request.user.is_authenticated:
@@ -26,6 +32,7 @@ def render_animals_list(request):
     return render(request, 'ZOO_App/listagem_animais.html')
 
 
+@user_passes_test(not_logged_check, login_url='/')
 def render_login(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -39,6 +46,7 @@ def render_login(request):
     return render(request, 'ZOO_App/login.html')
 
 
+@user_passes_test(not_logged_check, login_url='/')
 def render_register(request):
     if request.method == 'POST':
         if request.POST.get("password") == request.POST.get("password2"):
@@ -60,7 +68,7 @@ def render_register(request):
         return render(request, 'ZOO_App/registar.html')
 
 
-@login_required(login_url='/votacao')
+@login_required(login_url='/')
 def render_logout(request):
     logout(request)
     return HttpResponseRedirect(reverse('ZOO_App:login'))
@@ -115,32 +123,6 @@ def render_noticias(request):
                   {'noticias': lista_noticias, 'all' :list})
 
 
-    # lista_noticias_total = Noticia.objects.all()
-    # lista_noticias_user = UtilizadorNoticia_pk.objects.filter(utilizador=request.user.utilizador)
-    # lista_tags = {}
-    # lista_noticias = []
-    # lista_noticias_recomendadas = []
-    # for item in lista_noticias_user:
-    #     noticia = item.noticia
-    #     lista_noticias = lista_noticias + [noticia]
-    #     lista_tags_noticia = NoticiaTag_pk.objects.filter(noticia=noticia)
-    #     for item2 in lista_tags_noticia:
-    #         if lista_tags is not None:
-    #             if item2.tag.nome in lista_tags:
-    #                 lista_tags[item2.tag.nome] = lista_tags[item2.tag.nome] + 1
-    #             else:
-    #                 lista_tags[item2.tag.nome] = 1
-    #         else:
-    #             lista_tags[item2.tag.nome] = 1
-    # for item in NoticiaTag_pk.objects.all():
-    #     if item.noticia not in lista_noticias and item.tag not in lista_tags.keys():
-    #         lista_noticias_recomendadas = lista_noticias_recomendadas + [item.noticia]
-    # lista_noticias_recomendadas = lista_noticias_recomendadas + list(lista_noticias_total)
-    # lista_noticias_recomendadas = lista_noticias_recomendadas[0:4]
-
-
-
-
 
 def render_detalhe_noticia(request, noticia_id):
     noticia = get_object_or_404(Noticia, pk=noticia_id)
@@ -189,7 +171,7 @@ def render_produto(request, produto_id):
         return render(request, 'ZOO_App/product_info.html', {'produto': produto,'all' :list})
     return render(request, 'ZOO_App/product_info.html', {'produto': produto})
 
-#@login_required(login_url='/login')
+@login_required(login_url='/login')
 def addProductToCart(request):
     if request.method == 'POST':
         try:
@@ -247,6 +229,7 @@ def getProductsInCart(request):
     #return render(request, 'ZOO_App/shop_archive.html', {'all':dict, 'product_list': product_list})
 
 
+@login_required(login_url='/login')
 def render_purchase(request):
     #utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     #dict = auxGetProductsInCart(utilizador)
@@ -257,6 +240,7 @@ def render_purchase(request):
         return render_shop(request)
 
 
+@login_required(login_url='/login')
 def finishPurchase(request):
     utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
     if request.user.is_authenticated:
@@ -282,6 +266,7 @@ def getTotalPrice(list):
     return sum
 
 
+@login_required(login_url='/login')
 def emptyCart(request):
     if request.user.is_authenticated:
         product_list = Produto.objects.all()
@@ -291,6 +276,8 @@ def emptyCart(request):
             item.delete()
         return render_shop(request)
     
+
+@login_required(login_url='/login')
 def deleteProductFromCart(request, produto_id):
     if request.user.is_authenticated:
         utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
@@ -304,6 +291,9 @@ def deleteProductFromCart(request, produto_id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
         #return getProductsInCart(request)   
+
+
+@login_required(login_url='/login')
 def takeProductFromCart(request, produto_id):
     if request.user.is_authenticated:
         utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
@@ -321,6 +311,7 @@ def takeProductFromCart(request, produto_id):
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))
 
 
+@login_required(login_url='/login')
 def sumProductToCart(request, produto_id):
     if request.user.is_authenticated:
         utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
@@ -334,6 +325,8 @@ def sumProductToCart(request, produto_id):
                 item.save()
         return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/'))     
             
+
+@login_required(login_url='/login')
 def render_minhascompras(request):
     if request.user.is_authenticated:
         list = getProductsInCart(request)
@@ -346,6 +339,7 @@ def render_minhascompras(request):
         return render(request, 'ZOO_App/minhascompras.html', {'all' :list, 'fatura':dict, 'bilhetes':bilhetes})
 
 
+@login_required(login_url='/login')
 def addComentario(request, noticia_id):
     if request.user.is_authenticated:
         if request.method == 'POST':
@@ -404,6 +398,8 @@ def render_alterar_password(request):
     else:
         return render(request, 'ZOO_App/alterar_password.html', {'all' :list})
 
+
+@login_required(login_url='/login')
 def bilheteCompra(request,crianca,adulto,senior):
     if(crianca != 0):
         bilheteCrianca = BilheteUtilizador(
@@ -443,38 +439,40 @@ def render_remover_like(request, noticia_id):
     like_amount = len(UtilizadorNoticia_pk.objects.filter(noticia=noticia, like=True))
     return HttpResponseRedirect(reverse('ZOO_App:detalhe_noticia', args=(noticia_id,)), {'noticia': noticia, "comments": comments, "like": utilizadornoticia.like, "like_amount": like_amount})
 
-def render_createProduct(request):
-    if request.user.is_superuser:
-        if request.method == "POST" and request.FILES["myfile"]:
-            designacao = request.POST['designacao']
-            categoria = request.POST['categoria']
-            descricao = request.POST['descricao']
-            preco = request.POST['preco']
-            myfile = request.FILES['myfile']
-            produto = Produto(designacao=designacao, categoria=categoria, descricao=descricao, preco=preco, imagem=myfile )
-            produto.save()
-            return render_shop(request)
-        else:
-            product_list = Produto.objects.all()  
-            product_types=  []
-            for product in product_list:
-                if product.categoria not in product_types:
-                    product_types.append(product.categoria)      
-            return render(request, 'ZOO_App/createProduct.html', {"categorias": product_types})
 
-def render_deleteProduct(request, produto_id):
-    if request.user.is_superuser:       
-        produto = Produto.objects.get(pk=produto_id)
-        produto.ativo=False
+@user_passes_test(admin_check, login_url='/shop')
+def render_createProduct(request):
+    if request.method == "POST" and request.FILES["myfile"]:
+        designacao = request.POST['designacao']
+        categoria = request.POST['categoria']
+        descricao = request.POST['descricao']
+        preco = request.POST['preco']
+        myfile = request.FILES['myfile']
+        produto = Produto(designacao=designacao, categoria=categoria, descricao=descricao, preco=preco, imagem=myfile )
         produto.save()
         return render_shop(request)
+    else:
+        product_list = Produto.objects.all()  
+        product_types=  []
+        for product in product_list:
+            if product.categoria not in product_types:
+                product_types.append(product.categoria)      
+        return render(request, 'ZOO_App/createProduct.html', {"categorias": product_types})
+
+
+
+@user_passes_test(admin_check, login_url='/shop')
+def render_deleteProduct(request, produto_id):       
+    produto = Produto.objects.get(pk=produto_id)
+    produto.ativo=False
+    produto.save()
+    return render_shop(request)
         
 
-def admin_check(user):
-    return user.is_superuser
 
 
-@user_passes_test(admin_check, login_url='/ZOO_App/index')
+
+@user_passes_test(admin_check, login_url='/')
 def render_criar_noticia(request):
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
@@ -487,7 +485,7 @@ def render_criar_noticia(request):
         return render(request, 'ZOO_App/criar_noticia.html')
 
 
-@user_passes_test(admin_check, login_url='/ZOO_App/index')
+@user_passes_test(admin_check, login_url='/')
 def render_remover_noticia(request, noticia_id):
     noticia = Noticia.objects.get(pk=noticia_id)
     noticia.delete()
