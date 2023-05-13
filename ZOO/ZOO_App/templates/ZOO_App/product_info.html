@@ -14,7 +14,7 @@
 <h1 class="product-title">Produto</h1>
 <div class="product-content">
     <div class="product-image-container" style="width:40%; height:auto; float: left;">
-        <img src="{%static produto.imagem.url %}" class="product-item" alt="">
+        <img src="{{ produto.imagem.url }}" class="product-item" alt="">
     </div>
     <div class="product-info" style="margin-left: 45%; width: 50%;">
         <h3 class="product-name">{{produto.designacao}}</h3>
@@ -27,6 +27,14 @@
         <form action="{% url 'ZOO_App:addProductToCart' %}" method="post">
             {% csrf_token %}
             <input type="number" value="1" name="quantidade">
+            {% if request.user.is_superuser%}
+
+            <a href="{% url 'ZOO_App:deleteProduct' produto.id%}" class="btn btn-danger ms-5">
+                <i class="bx bxs-trash"  id="shopping-icon"></i> Remover Produto</a>
+
+            {% endif %}
+
+            <br><br>
             <div class="add-cartdiv">
                 <button name="produto_id" id="b-jquery" type="submit" value="{{ produto.id }}" class="add-cart">
                     <i class="bx bx-shopping-bag"  id="shopping-icon"></i>  Add to cart

@@ -21,7 +21,7 @@
                 <!--<img src="" alt="" class="cart-image">--> 
                     <div class="row">
                         <div class="col" >
-                            <img src="{% static item.produto.imagem.url %}" alt="" style=" width: 60%; height: auto; margin-left: 20%; margin-right: 20%;" class="product-cart-imagep">
+                            <img src="{{ item.produto.imagem.url }}" alt="" style=" width: 60%; height: auto; margin-left: 20%; margin-right: 20%;" class="product-cart-imagep">
                         </div>
                         <div class="col">
                             <h2 class="product-cart-pricep mt-4">{{item.produto.preco}} €</h2>
@@ -45,29 +45,14 @@
         <div class="cart-totalp float-end">
             <h3 class="cart-total-titlep" style=" display:inline-block"> Total: </h3>
             <h3 class="cart-total-pricep" style=" display:inline-block"> </h3>
-            <script>
-                function sum() {
-                    const prices = document.getElementsByClassName("product-cart-pricep");
-                    const quantities = document.getElementsByClassName("product-quantityp");
-                    let sum=0;
-                    let aux="";
-                    for (let index = 0; index < prices.length; index++) {
-                        aux = prices[index].textContent.substring(0, prices[index].textContent.length-2);
-                        sum += parseFloat(aux) * parseFloat(quantities[index].textContent.split(": ")[1]); 
-                    }
-                    
-                    let string = sum.toString();
-                    let aux2 = string.split(".")
-                    string = aux2[0] + "." + aux2[1].substring(0,2) + " €";
-                    return string;
-                }
-                document.getElementsByClassName("cart-total-pricep")[0].textContent=sum();
-            </script>
+            
         </div>
         {% endif %}
     </div>
     <br><br>
     <form action="{% url 'ZOO_App:finishPurchase'%}" class="ms-5" method="POST">
+        
+  {% csrf_token %}
 
         {% if user.utilizador.morada %}
 
@@ -110,4 +95,32 @@
 
     
 </div>
+
+
+<script>
+    function sum() {
+        const prices = document.getElementsByClassName("product-cart-pricep");
+        const quantities = document.getElementsByClassName("product-quantityp");
+        let sum=0;
+        let aux="";
+        for (let index = 0; index < prices.length; index++) {
+            aux = prices[index].textContent.substring(0, prices[index].textContent.length-2);
+            sum += parseFloat(aux) * parseFloat(quantities[index].textContent.split(": ")[1]); 
+        }
+        
+        let string = sum.toString();
+        if(string.includes(".")){
+            let aux2 = string.split(".")
+            if (aux2[1].length > 2){
+              string = aux2[0] + "." + aux2[1].substring(0,2) + " €";
+            }else if (aux2[1].length===1)
+              string = aux2[0] + "." + aux2[1].substring(0,1) + "0 €";
+          }else
+            string = string + ".00 €"
+                   
+          return string;
+
+    }
+    document.getElementsByClassName("cart-total-pricep")[0].textContent=sum();
+</script>
 {%endblock%}

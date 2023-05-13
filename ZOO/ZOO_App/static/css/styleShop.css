@@ -12,6 +12,10 @@
 
 }
 
+.product-image{
+    aspect-ratio: 1 / 1;
+}
+
 
 
 .product-title{
@@ -68,6 +72,7 @@
   .cart-total{
     margin-top: 30px;
     margin-bottom: 40px;
+
   }
 
 

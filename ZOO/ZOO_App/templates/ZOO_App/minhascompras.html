@@ -19,6 +19,11 @@
     .row-secondary-ind{
         margin-top: 20px;
     }
+
+    .ui-accordion-header { background-color: rgb(165, 128, 78); color: white; border-color: rgb(165, 128, 78);}
+
+    .ui-accordion-header.ui-state-active { background-color: rgb(114, 85, 46); }
+
 </style>
 
 
@@ -39,7 +44,7 @@
                         </div>
                         <div class="col-md-4">
             
-                            <img src="{% static value.0.produto.imagem.url %}" style="width: 80%;float: right;" alt="">
+                            <img src="{{ value.0.produto.imagem.url }}" style="width: 60%;float: right;" alt="">
             
                         </div>
                         
@@ -51,7 +56,7 @@
                         {% for item in value %}    
                             <div class="compras-box row row-secondary-ind" >
                                 <div class="col-md-4">
-                                    <img src="{% static item.produto.imagem.url %}" alt="" style=" width: 50%; height: auto;" class="compras-cart-image">
+                                    <img src="{{ item.produto.imagem.url }}" alt="" style=" width: 50%; height: auto;" class="compras-cart-image">
                 
                                 </div>
                                 <div class="col-md-8">

@@ -7,6 +7,7 @@ from django.urls import reverse
 from django.views import generic
 from django.db import transaction
 from django.utils import timezone
+from django.conf import settings
 
 from .models import *
 
@@ -193,7 +194,7 @@ def addProductToCart(request):
             produto_id = request.POST.get("produto_id")
             quantidade = request.POST.get("quantidade")
         except KeyError:
-            return render(request, 'ZOO_App/shop.html')
+            return render(request, 'ZOO_App/shop_archive.html')
         #request.user.id
         if produto_id:
             produto = get_object_or_404(Produto, pk=produto_id)
@@ -211,7 +212,7 @@ def addProductToCart(request):
         else:
             print("Produto selecionado não existe")
     else:
-        return render(request, 'ZOO_App/shop.html')  
+        return render(request, 'ZOO_App/shop_archive.html')  
 
 
 def auxGetProductsInCart(utilizador):
@@ -427,3 +428,29 @@ def render_remover_like(request, noticia_id):
     utilizadornoticia.save()
     like_amount = len(UtilizadorNoticia_pk.objects.filter(noticia=noticia, like=True))
     return HttpResponseRedirect(reverse('ZOO_App:detalhe_noticia', args=(noticia_id,)), {'noticia': noticia, "comments": comments, "like": utilizadornoticia.like, "like_amount": like_amount})
+
+def render_createProduct(request):
+    if request.user.is_superuser:
+        if request.method == "POST" and request.FILES["myfile"]:
+            designacao = request.POST['designacao']
+            categoria = request.POST['categoria']
+            descricao = request.POST['descricao']
+            preco = request.POST['preco']
+            myfile = request.FILES['myfile']
+            produto = Produto(designacao=designacao, categoria=categoria, descricao=descricao, preco=preco, imagem=myfile )
+            produto.save()
+            return render_shop(request)
+        else:
+            product_list = Produto.objects.all()  
+            product_types=  []
+            for product in product_list:
+                if product.categoria not in product_types:
+                    product_types.append(product.categoria)      
+            return render(request, 'ZOO_App/createProduct.html', {"categorias": product_types})
+
+def render_deleteProduct(request, produto_id):
+    if request.user.is_superuser:       
+            produto = Produto.objects.get(pk=produto_id)
+            produto.delete()
+            return render_shop(request)
+        

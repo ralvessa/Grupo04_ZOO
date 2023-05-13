@@ -68,7 +68,7 @@
           background-color: white;
           overflow-x: hidden;
           overflow-y: auto;
-          display: none;
+          display:none;
       }
       .cart-total{
         margin-top: 30px;
@@ -200,7 +200,7 @@
               <div class="cart-box">
                   <!--<img src="" alt="" class="cart-image">--> 
                   <div class="detail-product">
-                      <img src="{% static item.produto.imagem.url %}" alt="" style=" width: 50%; height: 50%;" class="product-cart-image">
+                      <img src="{{ item.produto.imagem.url }}" alt="" style=" width: 50%; height: 50%;" class="product-cart-image">
                       <p class="product-cart-price">{{item.produto.preco}} €</p>
                       <input type="number" value={{item.quantidade}} class="product-quantity">
                       <a href="{% url 'ZOO_App:deleteProductFromCart' item.produto.id%}" class="btn btn-secondary btn-checkout">
@@ -712,8 +712,15 @@
           }
           //document.getElementsByClassName("cart-total-price")[0].value = sum;
           let string = sum.toString();
-          let aux2 = string.split(".")
-          string = aux2[0] + "." + aux2[1].substring(0,2) + " €";
+          if(string.includes(".")){
+            let aux2 = string.split(".")
+            if (aux2[1].length > 2){
+              string = aux2[0] + "." + aux2[1].substring(0,2) + " €";
+            }else if (aux2[1].length===1)
+              string = aux2[0] + "." + aux2[1].substring(0,1) + "0 €";
+          }else
+            string = string + ".00 €"
+                   
           return string;
           //document.getElementsByClassName("cart-total-price")[0].textContent = string;
       }

@@ -1,5 +1,7 @@
 from django.urls import path
 from . import views
+from django.conf import settings
+from django.conf.urls.static import static
 
 app_name = 'ZOO_App'
 urlpatterns = [
@@ -29,4 +31,9 @@ urlpatterns = [
     path('bilheteCompra/<int:crianca>/<int:adulto>/<int:senior>', views.bilheteCompra, name='bilheteCompra'),
     path('noticia/<int:noticia_id>/adicionar_like', views.render_adicionar_like, name='adicionar_like'),
     path('noticia/<int:noticia_id>/remover_like', views.render_remover_like, name='remover_like'),
+    path('createProduct',views.render_createProduct, name='createProduct'),
+    path('deleteProduct/<int:produto_id>',views.render_deleteProduct, name='deleteProduct'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
