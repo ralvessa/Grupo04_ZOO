@@ -98,8 +98,12 @@ def render_noticias(request):
                 else:
                     lista_tags[item2.tag.nome] = 1
         for item in NoticiaTag_pk.objects.all():
-            if item.noticia not in lista_noticias and item.tag not in lista_tags.keys():
+            if item.noticia not in lista_noticias_user and item.tag.nome in lista_tags.keys():
                 lista_noticias_recomendadas = lista_noticias_recomendadas + [item.noticia]
+        if len(lista_noticias_recomendadas) < 4:
+            for item in lista_noticias:
+                if item not in lista_noticias_user:
+                    lista_noticias_recomendadas = lista_noticias_recomendadas + [item]
         lista_noticias_recomendadas = lista_noticias_recomendadas + list(lista_noticias)
         lista_noticias_recomendadas = lista_noticias_recomendadas[0:4]
         lista_noticias = list(lista_noticias)
@@ -474,15 +478,21 @@ def render_deleteProduct(request, produto_id):
 
 @user_passes_test(admin_check, login_url='/')
 def render_criar_noticia(request):
+    tags = Tag.objects.all()
     if request.method == 'POST' and request.FILES['myfile']:
         myfile = request.FILES['myfile']
         descricao = request.POST['descricao']
         titulo = request.POST['titulo']
         noticia = Noticia(descricao=descricao, titulo=titulo, imagem=myfile)
         noticia.save()
+        for tag in tags:
+            tmp = "tag_"+tag.nome
+            if tmp in request.POST:
+                noticia_tag = NoticiaTag_pk(noticia=noticia, tag=tag)
+                noticia_tag.save()
         return render_detalhe_noticia(request, noticia.id)
     else:
-        return render(request, 'ZOO_App/criar_noticia.html')
+        return render(request, 'ZOO_App/criar_noticia.html', {"tags": tags})
 
 
 @user_passes_test(admin_check, login_url='/')
