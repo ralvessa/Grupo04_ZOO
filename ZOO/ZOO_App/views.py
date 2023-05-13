@@ -22,10 +22,6 @@ def render_index(request):
     return render(request, 'ZOO_App/index.html')
 
 
-def render_animals_list(request):
-    return render(request, 'ZOO_App/listagem_animais.html')
-
-
 def render_login(request):
     if request.method == 'POST':
         username = request.POST['username']

@@ -62,7 +62,7 @@
   </div>
 </div>
 
-<div class="all-comments" style="margin-left: 10%; margin-right: 10%;">
+<div class="all-comments overflow-auto" style="margin-left: 10%; margin-right: 10%;">
   {% for item in comments %}
   <p class="user-name" style="float: left; margin-right: 15px;"> {{item.utilizador.user}} </p>
   <input type="textarea" class="comment-bubble" value="{{item.comentario}}" name="comment" readonly style="float: left;">
@@ -75,7 +75,7 @@
     {% csrf_token %}
     <input type="textarea" class="comment-bubble" placeholder="Escreva o seu comentário" name="comment" style="float: right; margin-top: 10px;">
     <br><br>
-    <input type="submit" name="submit" value="Comentar" class="btn btn-primary" style="float: right; margin-bottom: 20px;">
+    <input type="submit" name="submit" value="Comentar" class="btn btn-success" style="float: right; margin-bottom: 20px;">
   </form>
 
 </div>

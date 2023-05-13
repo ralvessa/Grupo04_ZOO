@@ -12,7 +12,7 @@
 {%block conteudo%}
 
 <h1 class="product-title">Produto</h1>
-<div class="product-content">
+<div class="product-content overflow-auto">
     <div class="product-image-container" style="width:40%; height:auto; float: left;">
         <img src="{{ produto.imagem.url }}" class="product-item" style="aspect-ratio: 1;" alt="">
     </div>
@@ -37,7 +37,7 @@
 
             <br><br>
             <div class="add-cartdiv">
-                <button name="produto_id" id="b-jquery" type="submit" value="{{ produto.id }}" class="add-cart btn btn-success" >
+                <button name="produto_id" id="b-jquery" type="submit" value="{{ produto.id }}" class="add-cart btn btn-success " >
                     <i class="bx bx-shopping-bag"  id="shopping-icon"></i>  Add to cart
                 </button>
             </div>
@@ -52,6 +52,7 @@
       
     </div>
 </div>
+<br>
 <script>
     function alertLoginRequired() {
         alert("Hello! Login Required!");

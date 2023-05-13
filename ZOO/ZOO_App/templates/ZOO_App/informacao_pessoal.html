@@ -37,7 +37,7 @@
       class="form-control"
       type="date"
       name="birthday"
-      value="{{ utilizador.data_nascimento }}"
+      value="{{ utilizador.data_nascimento|date:'Y-m-d' }}"
       disabled
     />
     <br />
@@ -86,3 +86,5 @@
   </div>
 </form>
 {% endblock %}
+
+{% block footer%}{%endblock%}

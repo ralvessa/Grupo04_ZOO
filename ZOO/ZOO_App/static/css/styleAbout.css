@@ -1,0 +1,22 @@
+
+.text_title_about{
+    margin-left: 5%;
+    margin-right: 5%;
+    color: #492000
+}
+
+.text_about {
+    margin-left: 6%;
+    margin-right: 6%;
+    text-align: justify;
+    text-justify: inter-word;
+}
+.center{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
+}
+
+
+
