@@ -5,8 +5,20 @@
   }
 </style>
 
-<div class="container-fluid justify-content-center">
-  <p class="text-center fs-3 fw-bolder mt-2">{{noticia.titulo}}</p>
+<div class="container justify-content-center">
+  <div class="row justify-content-center">
+    <div class="col-auto">
+      <p class="text-center fs-3 fw-bolder mt-2 d-inline-block">{{noticia.titulo}}</p>
+      {% if request.user.is_superuser %}
+      <a
+        href="{% url 'ZOO_App:remover_noticia' noticia.id%}"
+        class="btn btn-danger btn-checkout ms-5 mb-2 d-inline-block"
+      >
+        Remover Notícia</a
+      >
+      {% endif %}
+    </div>
+  </div>
   <div class="row justify-content-center mt-3">
     <div class="col-6">
       <img
