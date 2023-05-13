@@ -30,7 +30,7 @@
             <input type="number" value="1" name="quantidade" class="form-control w-50" required>
             {% if request.user.is_superuser%}
 
-            <a href="{% url 'ZOO_App:deleteProduct' produto.id%}" class="btn btn-danger ms-5">
+            <a href="{% url 'ZOO_App:deleteProduct' produto.id%}" class="btn btn-danger">
                 <i class="bx bxs-trash"  id="shopping-icon"></i> Remover Produto</a>
 
             {% endif %}

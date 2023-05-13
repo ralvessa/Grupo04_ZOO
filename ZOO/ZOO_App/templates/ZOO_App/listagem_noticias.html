@@ -27,40 +27,45 @@
     </div>
   </div>
 </form>
+{% if recomendadas %}
 <div class="container text-center">
-  {% if recomendadas %}
-  <p class="text-center fs-3 fw-bolder mt-2 d-inline-block">
-    Algumas recomendações para si
-  </p>
-  {% if request.user.is_superuser %}
-  <a
-    href="{% url 'ZOO_App:criar_noticia'%}"
-    class="btn btn-success btn-checkout ms-5 mb-2"
-  >
-    Criar Notícia</a
-  >
-  {% endif %}
-  <div class="row row-cols-sm-1 row-cols-md-2">
-    {% for noticia in recomendadas %}
-    <div class="col my-2">
-      <div class="card">
-        <img
-          src="{{ noticia.imagem.url }}"
-          class="card-img-top"
-          alt="imagem da noticia"
-        />
-        <div class="card-body">
-          <h5 class="card-title">{{noticia.titulo}}</h5>
-          <a
-            href="{% url 'ZOO_App:detalhe_noticia' noticia.id %}"
-            class="btn btn-secondary"
-            >Abrir Notícia</a
-          >
-        </div>
+  <div class="row justify-content-center">
+    <div class="col">
+      <p class="text-center fs-3 fw-bolder mt-2 d-inline-block">
+        Algumas recomendações para si
+      </p>
+      {% if request.user.is_superuser %}
+      <a
+        href="{% url 'ZOO_App:criar_noticia'%}"
+        class="btn btn-success btn-checkout ms-5 mb-2"
+      >
+        Criar Notícia</a
+      >
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<div class="row row-cols-sm-1 row-cols-md-2">
+  {% for noticia in recomendadas %}
+  <div class="col my-2">
+    <div class="card">
+      <img
+        src="{{ noticia.imagem.url }}"
+        class="card-img-top"
+        alt="imagem da noticia"
+      />
+      <div class="card-body">
+        <h5 class="card-title">{{noticia.titulo}}</h5>
+        <a
+          href="{% url 'ZOO_App:detalhe_noticia' noticia.id %}"
+          class="btn btn-secondary"
+          >Abrir Notícia</a
+        >
       </div>
     </div>
-    {% endfor %}
   </div>
+  {% endfor %}
 </div>
 <hr class="mx-5 fs-3" style="color: blueviolet" />
 {% endif %}
