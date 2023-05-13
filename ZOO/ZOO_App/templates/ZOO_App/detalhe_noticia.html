@@ -3,6 +3,12 @@
   .like {
     border-width: 0px;
   }
+
+  .comment-bubble{
+    width:70%;
+    border-radius: 10px;
+    padding: 5px;
+  }
 </style>
 
 <div class="container justify-content-center">
@@ -59,7 +65,7 @@
 <div class="all-comments" style="margin-left: 10%; margin-right: 10%;">
   {% for item in comments %}
   <p class="user-name" style="float: left; margin-right: 15px;"> {{item.utilizador.user}} </p>
-  <input type="text" value="{{item.comentario}}" name="comment" readonly style="width:70%; float: left;">
+  <input type="textarea" class="comment-bubble" value="{{item.comentario}}" name="comment" readonly style="float: left;">
   <br><br>
 
   {% endfor%}
@@ -67,7 +73,7 @@
 
   <form action="{% url 'ZOO_App:addComentario' noticia.id %}" method="POST">
     {% csrf_token %}
-    <input type="text" placeholder="Escreva o seu comentário" name="comment" style="width:70%; float: right; margin-top: 10px;">
+    <input type="textarea" class="comment-bubble" placeholder="Escreva o seu comentário" name="comment" style="float: right; margin-top: 10px;">
     <br><br>
     <input type="submit" name="submit" value="Comentar" class="btn btn-primary" style="float: right; margin-bottom: 20px;">
   </form>
