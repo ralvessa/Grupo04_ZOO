@@ -338,10 +338,11 @@
               <div class="row">
                 <div class="col-md-2 flex-center-v">
                   <img
-                    src="alarm-clock-icon.png"
+                    src="{% static 'alarm-clock-icon.png' %}"
                     alt="alarm-clock"
                     height="30px"
                     width="30px"
+                    class="ms-3"
                   />
                 </div>
                 <div class="col">
@@ -360,10 +361,11 @@
               <div class="row">
                 <div class="col-md-2 flex-center-v">
                   <img
-                    src="thermometer-icon.png"
+                    src="{% static 'thermometer-icon.png' %}"
                     alt="thermometer"
                     width="30px"
                     height="30px"
+                    class="ms-3"
                   />
                 </div>
                 <div class="col">
@@ -393,28 +395,29 @@
       ></iframe>
 
       <footer style="background-color: black">
-        <div class="row justify-content-center w-100">
+        <div class="row justify-content-between w-100">
           <div
-            class="col-sm-4 col-md col-sm-4 col-12 col pt-5 mx-5"
+            class="col-sm-4 col-md col-sm-4 col-12 col pt-3 ms-2"
             style="color: #fff"
           >
-            <h5>Find us</h5>
+            <h5>Onde nos pode encontrar</h5>
             <p style="padding-bottom: 10px">
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptas
-              at ex velit dolorum inventore sequi, repudiandae, ea, hic fugiat
-              placeat ab vero distinctio aspernatur porro consequuntur
-              voluptatum saepe amet temporibus.
+              Praça Marechal Humberto Delgado, 1549-004 Lisboa
             </p>
           </div>
           <div
-            class="col-sm-4 col-md col-sm-4 col-12 col pt-5 mx-5"
+            class="col-sm-4 col-md col-sm-4 col-12 col pt-3"
+            style="color: #fff"
+          >
+            <h5>Horário de atendimento</h5>
+            <p style="padding-bottom: 10px">Aberto das 09:00 até ás 18:00</p>
+          </div>
+          <div
+            class="col-sm-4 col-md col-sm-4 col-12 col pt-3"
             style="color: #fff"
           >
             <h5>Quick Links</h5>
             <ul style="list-style-type: none; margin: 0px; padding-left: 0px">
-              <li>
-                <a href="" class="link-primary">Teste1</a>
-              </li>
               <li>
                 <a href=""> <i class="bx-fw bx bxl-twitter"></i>Twitter </a>
               </li>
@@ -423,12 +426,11 @@
                   <i class="bx-fw bx bxl-instagram"></i>Instagram
                 </a>
               </li>
-              <li>
+              <li class="mb-3">
                 <a href="https://m.facebook.com/profile.php?id=157316757625516">
                   <i class="bx-fw bx bxl-facebook-square"></i>Facebook
                 </a>
               </li>
-              <li><a href="" class="link-primary">Teste2</a></li>
             </ul>
           </div>
         </div>
