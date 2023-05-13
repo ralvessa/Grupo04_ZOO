@@ -209,14 +209,15 @@
               class="product-cart-image"
             />
             <p class="product-cart-price">{{item.produto.preco}} €</p>
+            <p class="product-quantity-text">Quantidade: </p>
             <input
               type="number"
               value="{{item.quantidade}}"
-              class="product-quantity"
+              class="product-quantity form-control w-25"
             />
             <a
               href="{% url 'ZOO_App:deleteProductFromCart' item.produto.id%}"
-              class="btn btn-secondary btn-checkout"
+              class="btn btn-danger btn-checkout"
             >
               <i class="bx bxs-trash-alt product-remove"></i>
             </a>
@@ -231,7 +232,7 @@
           <br />
           <a
             href="{% url 'ZOO_App:purchase'%}"
-            class="btn btn-primary btn-checkout mb-3"
+            class="btn btn-secondary btn-checkout mb-3"
             >Ver Carrinho</a
           >
         </div>
@@ -271,7 +272,7 @@
             >
               Não
             </a>
-            <a href="{% url 'ZOO_App:logout' %}" class="btn btn-primary">Sim</a>
+            <a href="{% url 'ZOO_App:logout' %}" class="btn btn-success">Sim</a>
           </div>
         </div>
       </div>
@@ -370,7 +371,7 @@
                 </div>
                 <div class="col">
                   <h5 class="card-title">Temperatura</h5>
-                  <p class="card-text">Estão 12 graus no local do zoo.</p>
+                  <p class="card-text">Estão 21 graus no local do zoo.</p>
                 </div>
               </div>
             </div>
@@ -389,7 +390,7 @@
           >
             <h5>Onde nos pode encontrar</h5>
             <p style="padding-bottom: 10px">
-              Praça Marechal Humberto Delgado, 1549-004 Lisboa
+              Av. das Forças Armadas, 1649-026 Lisboa
             </p>
           </div>
           <div
@@ -397,24 +398,24 @@
             style="color: #fff"
           >
             <h5>Horário de atendimento</h5>
-            <p style="padding-bottom: 10px">Aberto das 09:00 até ás 18:00</p>
+            <p style="padding-bottom: 10px">Aberto das 09:00 às 18:00</p>
           </div>
           <div
             class="col-sm-4 col-md col-sm-4 col-12 col pt-3"
             style="color: #fff"
           >
-            <h5>Quick Links</h5>
+            <h5>Redes Sociais</h5>
             <ul style="list-style-type: none; margin: 0px; padding-left: 0px">
               <li>
-                <a href=""> <i class="bx-fw bx bxl-twitter"></i>Twitter </a>
+                <a href="https://twitter.com/JardimZoologico" style="text-decoration: none;"> <i class="bx-fw bx bxl-twitter"></i>Twitter </a>
               </li>
               <li>
-                <a href="https://www.instagram.com/jardimzoologico_oficial/">
+                <a href="https://www.instagram.com/jardimzoologico_oficial/" style="text-decoration: none;">
                   <i class="bx-fw bx bxl-instagram"></i>Instagram
                 </a>
               </li>
               <li class="mb-3">
-                <a href="https://m.facebook.com/profile.php?id=157316757625516">
+                <a href="https://m.facebook.com/profile.php?id=157316757625516" style="text-decoration: none;">
                   <i class="bx-fw bx bxl-facebook-square"></i>Facebook
                 </a>
               </li>

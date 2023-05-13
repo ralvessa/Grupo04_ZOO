@@ -2,7 +2,7 @@
 <div class="container h-100">
   <div class="row h-100 justify-content-center align-items-center my-5">
     <div class="col-6">
-      <div class="card border-primary">
+      <div class="card border-success">
         <p class="text-center fs-3 fw-bolder mt-2">Login</p>
         <form class="g-3 p-3" action="{% url 'ZOO_App:login' %}" method="post">
           {% csrf_token %}
@@ -28,7 +28,7 @@
           </div>
           <div class="row justify-content-between">
             <div class="col">
-              <button class="btn btn-primary mb-3" type="submit">Login</button>
+              <button class="btn btn-success mb-3" type="submit">Login</button>
             </div>
             <div class="col">
               <a
