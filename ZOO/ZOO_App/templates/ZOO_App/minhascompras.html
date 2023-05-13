@@ -39,7 +39,7 @@
           </div>
           <div class="col-md-4">
             <img
-              src="{% static value.0.produto.imagem.url %}"
+              src="{{ value.0.produto.imagem.url }}"
               style="width: 80%; float: right"
               alt=""
             />
@@ -52,7 +52,7 @@
         <div class="compras-box row row-secondary-ind">
           <div class="col-md-4">
             <img
-              src="{% static item.produto.imagem.url %}"
+              src="{{ item.produto.imagem.url }}"
               alt=""
               style="width: 50%; height: auto"
               class="compras-cart-image"
