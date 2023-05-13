@@ -1,101 +1,98 @@
-{%extends "./index.html"%} 
-
-{%block titulo%} Product {%endblock%}
-{% load static %}
-{%block head%}
-<link href="https://code.jquery.com/ui/jquery-ui-git.css" rel="stylesheet" type="text/css" />
+{%extends "./index.html"%} {%block titulo%} Product {%endblock%} {% load static%} {%block head%}
+<link
+  href="https://code.jquery.com/ui/jquery-ui-git.css"
+  rel="stylesheet"
+  type="text/css"
+/>
 <script src="https://code.jquery.com/jquery-git.js"></script>
 <script src="https://code.jquery.com/ui/jquery-ui-git.js"></script>
 
-{%endblock%}
-
-{%block conteudo%}
+{%endblock%} {%block conteudo%}
 <style>
-
-    .row{
-        margin-right: 3%;
-        margin-left: 3%;
-    }
-    .row-secondary-ind{
-        margin-top: 20px;
-    }
+  .row {
+    margin-right: 3%;
+    margin-left: 3%;
+  }
+  .row-secondary-ind {
+    margin-top: 20px;
+  }
 </style>
 
-
-
-<h1 class="product-title" style=" text-align: center;">Minhas Compras</h1>
-<br>
+<h1 class="product-title" style="text-align: center">Minhas Compras</h1>
+<br />
 <div class="row mb-3">
-    <div class="col-7">
-        <div class="row row-cols-1">
-            {% for key, value in fatura.items %}
-            
-                <div>
-                    <div class="row row-principal mb-3">
-                        <div class="col-md-8">
-                            <p>Data e Hora de Compra: {{key.data}}</p>
-                            <p>Preço Total: {{key.preco_total}} €</p>
-                
-                        </div>
-                        <div class="col-md-4">
-            
-                            <img src="{% static value.0.produto.imagem.url %}" style="width: 80%;float: right;" alt="">
-            
-                        </div>
-                        
-                    </div>
-                </div>
-                   
-                    
-                    <div class=" row-secondary">
-                        {% for item in value %}    
-                            <div class="compras-box row row-secondary-ind" >
-                                <div class="col-md-4">
-                                    <img src="{% static item.produto.imagem.url %}" alt="" style=" width: 50%; height: auto;" class="compras-cart-image">
-                
-                                </div>
-                                <div class="col-md-8">
-                                    <p class="product-compras-price">{{item.produto.preco}} €</p>
-                                    <p class="product-compras-quantity">Quantidade: {{item.quantidade}}</p>
-                                </div>
-                                        
-                            </div>
-                            {% endfor %}
-                                    
-                        <div class="compras-total float-end">
-                            <h3 class="compras-total-title d-inline-block"> Total:</h3>
-                            <h3 class="compras-total-price d-inline-block"> {{key.preco_total}} €</h3>
-                        </div>
-                    
-                    </div>
-               
-            {%endfor%}
-            </div>
+  <div class="col-7">
+    <div class="row row-cols-1">
+      {% for key, value in fatura.items %}
 
-    </div>
-    
-        <div class="col-4" style="background-color: whitesmoke;">
-            {% for item in bilhetes %}
-            <p>{{item.data_compra|date:'Y-m-d'}} - {{item.bilhete.intervalo_idade}} </p>
-            <p>{{item.quantidade}} x {{item.bilhete.preco}} €</p>
-
-            {% endfor %}
-
+      <div>
+        <div class="row row-principal mb-3">
+          <div class="col-md-8">
+            <p>Data e Hora de Compra: {{key.data}}</p>
+            <p>Preço Total: {{key.preco_total}} €</p>
+          </div>
+          <div class="col-md-4">
+            <img
+              src="{% static value.0.produto.imagem.url %}"
+              style="width: 80%; float: right"
+              alt=""
+            />
+          </div>
         </div>
+      </div>
 
+      <div class="row-secondary">
+        {% for item in value %}
+        <div class="compras-box row row-secondary-ind">
+          <div class="col-md-4">
+            <img
+              src="{% static item.produto.imagem.url %}"
+              alt=""
+              style="width: 50%; height: auto"
+              class="compras-cart-image"
+            />
+          </div>
+          <div class="col-md-8">
+            <p class="product-compras-price">{{item.produto.preco}} €</p>
+            <p class="product-compras-quantity">
+              Quantidade: {{item.quantidade}}
+            </p>
+          </div>
+        </div>
+        {% endfor %}
+
+        <div class="compras-total float-end">
+          <h3 class="compras-total-title d-inline-block">Total:</h3>
+          <h3 class="compras-total-price d-inline-block">
+            {{key.preco_total}} €
+          </h3>
+        </div>
+      </div>
+
+      {%endfor%}
+    </div>
+  </div>
+
+  <div class="col-4">
+    <ul class="list-group" class="list-group" style="display: inline-block;">
+    {% for item in bilhetes %}
+    <li class="list-group-item" >
+    <span style="margin-right: 40px;">Dia {{item.data_compra|date:'Y-m-d'}} - {{item.quantidade}} {%if item.quantidade > 1%} Bilhetes {%else%} Bilhete {%endif%} {{item.bilhete.intervalo_idade}} </span> 
+    <span style="float: right;">Total: {% widthratio item.quantidade 1 item.bilhete.preco%} €</span>
+    </li>
+     {% endfor %}
+</ul>
+  </div>
 </div>
 
 <script>
-    $(function () {
-            $(".row-cols-1").accordion({
-                heightStyle: "content"
-            });
-            var heightStyle = $( ".row-cols-1" ).accordion( "option", "heightStyle" );
-            $( ".row-cols-1" ).accordion( "option", "heightStyle", "fill" );
-        });
-
-        
+  $(function () {
+    $(".row-cols-1").accordion({
+      heightStyle: "content",
+    });
+    var heightStyle = $(".row-cols-1").accordion("option", "heightStyle");
+    $(".row-cols-1").accordion("option", "heightStyle", "fill");
+  });
 </script>
-
 
 {%endblock%}
