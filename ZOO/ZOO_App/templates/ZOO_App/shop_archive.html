@@ -14,6 +14,11 @@
 
 
 <body>
+    <img
+    src="{%static 'Animals\leopard2.jpg' %}"
+    alt="ups"
+    style="width: 100%; height: auto"
+  />
        
         <section class="shop container"> 
                 <h2 class="section-title">Shop Products</h2>
@@ -74,7 +79,7 @@
         $(document).ready(function(){
             $(".filtericon").click(function(){
                 if( $('.filters').is(':animated') ) { return false; }
-                $(".filters").animate({width:'toggle'}); 
+                $(".filters").animate({width:'toggle', opacity:'toggle'}); 
             }); 
         });
                 
