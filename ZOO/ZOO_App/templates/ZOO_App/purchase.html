@@ -5,11 +5,25 @@
 
 {%block head%}
 
-<link rel="stylesheet" href="{%static 'css\stylePurchase.css' %}">
 <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+
+
+
 {%endblock%}
 
 {%block conteudo%}
+<style>
+    .cart-content{
+        width: 80%;
+        margin-left: 10%;
+        margin-right: 10%;
+    }
+    .cart-titlep{
+        margin-top: 20px;
+    }
+
+
+</style>
 
 
 <div class="cartp">
@@ -26,14 +40,14 @@
                         <div class="col">
                             <h2 class="product-cart-pricep mt-4">{{item.produto.preco}} €</h2>
                             <a href="{% url 'ZOO_App:takeProductFromCart' item.produto.id%}" class="btn btn-checkout d-inline-block">
-                                <i class="bx bxs-minus-circle product-remove"></i>
+                                <i class="bx bxs-minus-circle product-remove bx-md"></i>
                             </a> 
                             <h3 class="product-quantityp d-inline-block mt-4">Quantidade: {{item.quantidade}}</h3>
                             <a href="{% url 'ZOO_App:sumProductToCart' item.produto.id%}" class="btn  btn-checkout d-inline-block ">
-                                <i class="bx bxs-plus-circle product-removep"></i>
+                                <i class="bx bxs-plus-circle product-removep bx-md"></i>
                             </a> 
                             <br>
-                            <a href="{% url 'ZOO_App:deleteProductFromCart' item.produto.id%}" class="btn btn-secondary btn-checkout mt-4">
+                            <a href="{% url 'ZOO_App:deleteProductFromCart' item.produto.id%}" class="btn btn-danger btn-checkout mt-4">
                                 <i class="bx bxs-trash-alt product-removep"></i>
                             </a> 
                         </div>
@@ -51,41 +65,40 @@
         {% endif %}
     </div>
     <br><br>
-    <form action="{% url 'ZOO_App:finishPurchase'%}" class="ms-5" method="POST">
+    <form action="{% url 'ZOO_App:finishPurchase'%}" class="ms-5 " method="POST">
         
   {% csrf_token %}
 
         {% if user.utilizador.morada %}
 
         <label for="address">Morada:</label>
-        <input type="text" value="{{user.utilizador.morada}}">
+        <input type="text" class="form-control w-25" value="{{user.utilizador.morada}}" readonly>
 
         {% else %}
 
         <label for="address">Morada</label>
-        <input type="text" value="">
+        <input type="text" class="form-control w-25" value="" readonly>
         
         {% endif %}  
-        <br>
         {% if user.utilizador.numero_contribuinte %}
 
         <label for="cont" class="mt-5">Número de Contribuinte:</label>
-        <input type="text" name="input_morada" value="{{user.utilizador.numero_contribuinte}}">
+        <input type="number" class="form-control w-25" value="{{user.utilizador.numero_contribuinte}}" readonly>
 
         {% else %}
 
         <label for="cont">Número de Contribuinte</label>
-        <input type="text" name="input_morada" value="">
+        <input type="number" class="form-control w-25"  value="" readonly>
               
         {% endif %}
         
         <br>
         <div class="row mt-3 mb-3 w-100">
             <div class="col-auto">
-                <input type="submit" class="btn btn-primary   justify-content-end" value="Finalizar Compra">
+                <input type="submit" class="btn btn-success   justify-content-end" value="Finalizar Compra">
             </div>
             <div class="col-auto">
-                <a href="{% url 'ZOO_App:emptyCart'%}" class="btn btn-primary btn-checkout">
+                <a href="{% url 'ZOO_App:emptyCart'%}" class="btn btn-danger btn-checkout">
                     Esvaziar Carrinho</a>
             </div>
         </div>

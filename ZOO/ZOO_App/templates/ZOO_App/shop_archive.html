@@ -27,13 +27,13 @@
             <i class='filtericon bx bx-filter-alt'></i>
 
             {% if request.user.is_superuser %}
-            <a href="{% url 'ZOO_App:createProduct'%}" class="btn btn-secondary btn-checkout ms-5">
+            <a href="{% url 'ZOO_App:createProduct'%}" class="btn btn-success btn-checkout ms-5">
                 Criar Produto</a>
             {% endif %}
          
             
             <div class="shop-content-w-filter">
-                <aside class="filters text-center" style="background-color: azure; margin-top: 10px; border-radius: 20px;">
+                <aside class="filters text-center" style="background-color: rgb(225, 197, 162); margin-top: 10px; border-radius: 20px;">
                     <h3 style="margin-top: 20px;">Filters</h3>
                     {% for produto in product_types %}
                     <input type="checkbox" id="type1" name="type1" value="{{produto}}" checked onchange="checkFilters(this)">
