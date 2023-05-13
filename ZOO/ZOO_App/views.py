@@ -164,7 +164,7 @@ def render_precario(request):
     return render(request, 'ZOO_App/precario.html', {'bilhete_list' :bilhetes})
 
 def render_shop(request):
-    product_list = Produto.objects.all()
+    product_list = Produto.objects.filter(ativo=True)
     
     product_types=  []
     for product in product_list:
@@ -182,6 +182,8 @@ def render_shop(request):
 
 def render_produto(request, produto_id):
     produto = get_object_or_404(Produto, pk=produto_id)
+    if produto.ativo==False:
+        return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) 
     if request.user.is_authenticated:
         list = getProductsInCart(request)
         return render(request, 'ZOO_App/product_info.html', {'produto': produto,'all' :list})
@@ -198,6 +200,8 @@ def addProductToCart(request):
         #request.user.id
         if produto_id:
             produto = get_object_or_404(Produto, pk=produto_id)
+            if produto.ativo==False:
+                return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) 
             utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
             try:
                 pcc_pk = ProdutoCarinhoCompras_pk.objects.get(produto=produto, utilizador=utilizador)
@@ -219,6 +223,8 @@ def auxGetProductsInCart(utilizador):
     pcc_pk = ProdutoCarinhoCompras_pk.objects.filter(utilizador=utilizador)
     list=[]
     for item in pcc_pk:
+        if item.produto.ativo==False:
+            continue
         list.append(item)
     return list  
 
@@ -260,6 +266,8 @@ def finishPurchase(request):
         fatura = Fatura(data=current_datetime, preco_total=float(precototal), utilizador=utilizador)
         fatura.save()
         for item in list:
+            if item.produto.ativo==False:
+                continue
             faturaprodutopk = FaturaProduto_pk(fatura= fatura, produto=item.produto, quantidade=item.quantidade)
             faturaprodutopk.save()
         emptyCart(request)    
@@ -288,6 +296,8 @@ def deleteProductFromCart(request, produto_id):
         utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
         produto = get_object_or_404(Produto, pk=produto_id)
         list = auxGetProductsInCart(utilizador) 
+        if produto.ativo==False:
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) 
         for item in list:
             if item.produto == produto:
                 item.delete()
@@ -299,6 +309,8 @@ def takeProductFromCart(request, produto_id):
         utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
         produto = get_object_or_404(Produto, pk=produto_id)
         list = auxGetProductsInCart(utilizador) 
+        if produto.ativo==False:
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) 
         for item in list:
             if item.produto == produto:
                 if item.quantidade > 1:
@@ -314,6 +326,8 @@ def sumProductToCart(request, produto_id):
         utilizador = get_object_or_404(Utilizador, user_id=request.user.id)
         produto = get_object_or_404(Produto, pk=produto_id)
         list = auxGetProductsInCart(utilizador) 
+        if produto.ativo==False:
+            return HttpResponseRedirect(request.META.get('HTTP_REFERER', '/')) 
         for item in list:
             if item.produto == produto:
                 item.quantidade +=1
@@ -450,9 +464,10 @@ def render_createProduct(request):
 
 def render_deleteProduct(request, produto_id):
     if request.user.is_superuser:       
-            produto = Produto.objects.get(pk=produto_id)
-            produto.delete()
-            return render_shop(request)
+        produto = Produto.objects.get(pk=produto_id)
+        produto.ativo=False
+        produto.save()
+        return render_shop(request)
         
 
 def admin_check(user):
