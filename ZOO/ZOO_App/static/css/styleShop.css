@@ -12,9 +12,7 @@
 
 }
 
-.product-image{
-    margin-top: 20px;
-}
+
 
 .product-title{
     font-size:larger;
@@ -62,6 +60,7 @@
 }
   
 .product-box{
+    margin-top: 10px;
     text-decoration: none ;
     color: black;
   }
